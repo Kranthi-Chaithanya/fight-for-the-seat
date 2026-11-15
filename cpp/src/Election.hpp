@@ -19,7 +19,7 @@ struct Election {
     float D = 1.f;
 
     void init(float difficulty);
-    void rerollNoise();
+    void rerollNoise(float range = 6.f);
     Shares exact(int r) const;
     Shares shown(int r, bool ex) const;  // with survey noise unless ex
     Shares overall(bool ex) const;

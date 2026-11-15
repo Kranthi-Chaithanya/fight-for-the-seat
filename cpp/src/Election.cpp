@@ -9,9 +9,9 @@ void Election::init(float d) {
     rerollNoise();
 }
 
-void Election::rerollNoise() {
+void Election::rerollNoise(float range) {
     for (int r = 0; r < NREGION; ++r)
-        for (int c = 0; c < NCAND; ++c) noise[r][c] = frand(-6.f, 6.f);
+        for (int c = 0; c < NCAND; ++c) noise[r][c] = frand(-range, range);
 }
 
 Shares Election::exact(int r) const {

@@ -79,7 +79,8 @@ class Campaign {
     float mult() const;
     float gain(float base, int r, bool fatigue = true);
     bool surveyed() const { return day <= surveyUntil; }
-    bool silence() const { return day == maxDay; }
+    // The last two campaign days model the statutory 48-hour silence period.
+    bool silence() const { return day >= maxDay - 1; }
     bool lateFor(float mins) const { return minute + mins > DAY_END + 1; }
     int freePromises() const { return bg == BG_IAS ? 5 : 3; }
     float streetBonus() const { return bg == BG_ACTIVIST ? 1.3f : 1.f; }

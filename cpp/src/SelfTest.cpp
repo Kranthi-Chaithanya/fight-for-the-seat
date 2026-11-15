@@ -36,7 +36,7 @@ static void playEvents(Campaign& C) {
         for (auto& q : debate()) q.answers[irand(0, 2)].fx(C);
         return;
     }
-    if (C.day == 5 || C.day == 10 || C.day == Campaign::maxDay) return;
+    if (C.day == 5 || C.day == 10 || C.silence()) return;
     if (const EventDef* e = rollEvent(C)) takeFirst(*e);
 }
 

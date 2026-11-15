@@ -127,14 +127,15 @@ int Campaign::crowdSize(int r, bool bussed) const {
 }
 
 std::string Campaign::rallyFinish(int r, float quality, bool bussed, int crowd) {
-    float base = 7.f * quality * (bussed ? 1.12f : 1.f) * (bg == BG_STAR ? 1.25f : 1.f);
+    // Buses can swell the visible crowd, but attendance alone is not votes.
+    float base = 7.f * quality * (bg == BG_STAR ? 1.25f : 1.f);
     if (rain) base *= .55f;
     el.addYou(r, gain(base, r));
     visits[r]++;
-    hype += 4 + quality * 5;
+    hype += 4 + quality * 5 + (bussed ? 1.f : 0.f);
     stats.rallies++;
     std::string msg;
-    int claimed = crowd * irand(4, 7);
+    int claimed = (int)std::lround(crowd * frand(1.15f, 1.5f));
     if (quality >= 1.0f)
         msg = strf("A roaring success. Police estimate the crowd at %s; your team claims %s.", fmtIN(crowd).c_str(), fmtIN(claimed).c_str());
     else if (quality >= .7f)
@@ -300,8 +301,10 @@ std::string Campaign::survey() {
     spend(2);
     spendTime(60, 1);
     surveyUntil = day + 2;
+    // A sample narrows uncertainty; it never exposes the exact model state.
+    el.rerollNoise(2.f);
     doing("Commissioned an internal survey");
-    return strf("Survey commissioned. Your map shows exact numbers until day %d.", std::min(surveyUntil, maxDay));
+    return strf("Survey commissioned. The map now shows sampled estimates through day %d.", std::min(surveyUntil, maxDay));
 }
 
 std::string Campaign::rest() {
@@ -373,6 +376,7 @@ void Campaign::speechSideEffects(int r, const SpeechLine& s) {
 
 // ---------------------------------------------------------------- rivals and day cycle
 void Campaign::rivalsAct() {
+    if (silence()) return;
     float D = el.D;
     std::string bits;
     for (int k = PD; k <= IND; ++k) {
@@ -413,7 +417,8 @@ void Campaign::endDay() {
     location = -1;
     rain = false;
     diary.clear();
-    el.rerollNoise();
+    // Keep a commissioned poll stable for its stated three-day window.
+    if (!surveyed()) el.rerollNoise();
     dayStartShare = yourShare();
     normalize();
 }
@@ -424,11 +429,12 @@ void Campaign::computePolling() {
         float tot = 0;
         for (int k = 0; k < NCAND; ++k) {
             float v = std::max(.5f, el.score[r][k] * (1 + gauss() * .06f));
-            float t = k == YOU ? 1 + booth[r] * .06f + hype / 400.f : RIVALS[k].turn;
+            // Booth teams mobilize our supporters; they do not raise turnout for everyone.
+            float t = k == YOU ? 1 + std::min(booth[r], 3) * .025f + hype / 600.f : RIVALS[k].turn;
             w[k] = (k == IND && bribedInd) ? v * .6f : v * t;
             tot += w[k];
         }
-        float turnout = clampf(REGIONS[r].turnout + hype / 700.f + frand(-.03f, .03f) + booth[r] * .008f, .4f, .86f);
+        float turnout = clampf(REGIONS[r].turnout + hype / 2400.f + frand(-.025f, .025f), .4f, .86f);
         long long polled = std::llround(REGIONS[r].voters * turnout);
         long long nota = std::llround(polled * frand(.006f, .014f));
         res[r].turnout = turnout;

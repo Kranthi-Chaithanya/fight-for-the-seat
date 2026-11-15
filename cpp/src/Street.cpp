@@ -682,7 +682,7 @@ void Game::street() {
     drawStreet();
     drawHud();
     // what the candidate is doing right now
-    Shares sh = C.el.shown(region, C.surveyed());
+    Shares sh = C.el.shown(region, false);
     int lead = (int)(std::max_element(sh.begin(), sh.end()) - sh.begin());
     Rectangle now{16, 64, 600, 54};
     DrawRectangleRounded(now, .2f, 8, Fade(Color{22, 18, 32, 255}, .9f));

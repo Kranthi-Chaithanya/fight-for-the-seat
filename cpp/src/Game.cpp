@@ -220,11 +220,11 @@ void Game::drawHud() {
         if (i < C.strikes) DrawRectangleRec(b, Pal::bad);
         else DrawRectangleLinesEx(b, 2, Pal::line);
     }
-    Shares ov = C.el.overall(C.surveyed());
+    Shares ov = C.el.overall(false);
     int rank = 1;
     for (int k = PD; k <= IND; ++k) rank += ov[k] > ov[YOU];
-    label(920, C.surveyed() ? "SEAT (SURVEY)" : "SEAT (ESTIMATE)");
-    ui::text(strf("%s%.0f%%", C.surveyed() ? "" : "~", ov[YOU]), 920, 20, 22, candColor(YOU), true);
+    label(920, C.surveyed() ? "SEAT (POLL EST.)" : "SEAT (TEAM EST.)");
+    ui::text(strf("~%.0f%%", ov[YOU]), 920, 20, 22, candColor(YOU), true);
     ui::text(strf("rank %d of 4", rank), 980, 27, 13, Pal::muted);
     if (ui::button({1072, 12, 62, 30}, showFeed ? "Feed" : "Feed", true, showFeed, "", KEY_TAB)) showFeed = !showFeed;
     if (ui::button({1140, 12, 56, 30}, "Help")) showHelp = true;
@@ -416,7 +416,10 @@ void Game::morning() {
     ui::textCentered("CHANDANPUR TIMES", P.x + P.width / 2, P.y + 18, 54, ink, true);
     DrawRectangle((int)P.x + 30, (int)P.y + 84, (int)P.width - 60, 3, ink);
     ui::text(strf("Day %d of %d  " DOT "  Election special", C.day, Campaign::maxDay), P.x + 32, P.y + 92, 15, ink, true);
-    ui::textRight(C.day == Campaign::maxDay ? "Campaign silence begins today" : strf("%d days to polling", Campaign::maxDay - C.day + 1), P.x + P.width - 32, P.y + 92,
+    std::string campaignStatus = C.day == Campaign::maxDay - 1 ? "48-hour campaign silence begins"
+                               : C.silence() ? "Campaign silence continues"
+                                             : strf("%d days to polling", Campaign::maxDay - C.day + 1);
+    ui::textRight(campaignStatus, P.x + P.width - 32, P.y + 92,
                   15, ink, true);
     DrawRectangle((int)P.x + 30, (int)P.y + 116, (int)P.width - 60, 1, ink);
     std::string head = C.headline.empty() ? "Three-way fight gets tighter in Chandanpur" : C.headline;
@@ -487,10 +490,11 @@ void Game::queueMorningEvents() {
         push(d);
         return;
     }
-    if (C.day == Campaign::maxDay) {
-        info("Day 14 " DOT " Model Code of Conduct", "Campaign silence begins",
-             "For the last 48 hours before polling, public campaigning stops: no rallies, roadshows, press conferences, social media campaigns or new promises.\n\n"
-             "You can still walk door to door, train booth agents, raise funds and run a survey. This is also the night when \"gifts\" change hands, and the flying squads know it.");
+    if (C.silence()) {
+        if (C.day == Campaign::maxDay - 1)
+            info("Day 13 " DOT " Model Code of Conduct", "The 48-hour silence period begins",
+                 "The 48-hour silence period starts now. No public meetings or processions, rallies, roadshows, campaign broadcasts or ads, press conferences on election matters, or public manifesto launches.\n\n"
+                 "Use the quiet period for internal planning and booth-agent preparation. Keep street visits from turning into public gatherings. Poll estimates remain estimates, even after an internal survey.");
         return;
     }
     if (const EventDef* e = rollEvent(C)) eventDialog(*e);
@@ -581,12 +585,12 @@ void Game::office() {
     // map
     Rectangle M{24, 96, 560, 420};
     ui::text("Chandanpur constituency", 24, 66, 20, Pal::text, true);
-    ui::textRight(C.surveyed() ? "Survey data: exact" : "Estimates, can be off by 6 points", 584, 70, 14, C.surveyed() ? Pal::good : Pal::muted);
+    ui::textRight(C.surveyed() ? "Internal poll estimate, about +/-2 pts" : "Team estimate, about +/-6 pts", 584, 70, 14, C.surveyed() ? Pal::good : Pal::muted);
     std::array<int, NREGION> lead{};
     std::array<float, NREGION> yours{};
     for (int r = 0; r < NREGION; ++r) {
-        lead[r] = C.el.leader(r, C.surveyed());
-        yours[r] = C.el.shown(r, C.surveyed())[YOU];
+        lead[r] = C.el.leader(r, false);
+        yours[r] = C.el.shown(r, false)[YOU];
     }
     mapHover = ui::blocked ? -1 : gfx::mapHit(M, ui::mouse());
     gfx::drawMap(M, lead, yours, mapHover, -1, C.surveyed(), t);
@@ -623,14 +627,14 @@ void Game::office() {
         }
     }
     // seat bars
-    Shares ov = C.el.overall(C.surveyed());
+    Shares ov = C.el.overall(false);
     ui::text("Whole seat, projected", 24, 530, 16, Pal::muted, true);
     for (int k = 0; k < NCAND; ++k) {
         float y = 556 + k * 30.f;
         gfx::drawSymbol(gfx::symbolOf(k, C.symbol), {36, y + 9}, 20, false, WHITE);
         ui::text(k == YOU ? C.name : RIVALS[k].name, 54, y, 15, Pal::text, true);
         ui::bar({220, y + 4, 300, 12}, ov[k] / 60.f, candColor(k));
-        ui::textRight(strf("%s%.0f%%", C.surveyed() ? "" : "~", ov[k]), 584, y, 15, Pal::text, true);
+        ui::textRight(strf("~%.0f%%", ov[k]), 584, y, 15, Pal::text, true);
     }
 
     // office actions
@@ -719,7 +723,7 @@ void Game::office() {
                         d.opts.push_back({"Back", "", true, nullptr});
                         push(d);
                     }});
-    acts.push_back({"Internal survey", "1 hour " DOT " " RUPEE "2L " DOT " exact numbers for 3 days", !C.surveyed() && C.funds >= 2 && !late(60), [this] {
+    acts.push_back({"Internal survey", "1 hour " DOT " " RUPEE "2L " DOT " sampled estimates for 3 days", !C.surveyed() && C.funds >= 2 && !late(60), [this] {
                         nowDoing = "Reading survey data";
                         runAction([this] { return C.survey(); });
                     }});

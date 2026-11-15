@@ -27,6 +27,13 @@ The game ends with polling day (EVM and VVPAT) and a round-by-round count.
 
 Difficulty: **Councillor** (easy), **MLA** (fair, tough), **Chanakya** (hard).
 
+## Election-rules note
+
+The final two campaign days model the 48-hour silence period. The game blocks rallies,
+roadshows, election-related press events, campaign blasts, and public manifesto launches
+during that window. Election rules vary by state and poll; this fictional scenario simplifies
+them for play. See the [Election Commission of India’s Model Code of Conduct](https://www.eci.gov.in/mcc).
+
 ## Layout
 
 | Path | What it is |
