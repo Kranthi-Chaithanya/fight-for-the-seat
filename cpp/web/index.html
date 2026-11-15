@@ -1,0 +1,45 @@
+<title>Fight for the Seat</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  /* Single dark look on purpose: the game canvas is dark in every theme. */
+  :root { --bg: #120e1a; --fg: #eee9f5; --muted: #a69db8; --accent: #a783f2; color-scheme: dark; }
+  html, body { height: 100%; }
+  body { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, "Segoe UI", sans-serif;
+         padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .wrap { max-width: 1280px; margin: 0 auto; padding-block: 16px; display: grid; gap: 10px; }
+  .stage { position: relative; width: 100%; aspect-ratio: 16 / 9; max-width: 100%; background: #000; border-radius: 8px; overflow: hidden; }
+  canvas { display: block; width: 100%; height: 100%; outline: none; }
+  canvas:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+  #loading { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 16px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: space-between; color: var(--muted); font-size: 13.5px; }
+  .bar b { color: var(--fg); }
+  kbd { font: 12px ui-monospace, Consolas, monospace; border: 1px solid #3a3150; border-radius: 4px; padding: 1px 5px; color: var(--fg); }
+</style>
+
+<div class="wrap">
+  <div class="stage">
+    <canvas id="canvas" tabindex="0" oncontextmenu="event.preventDefault()"></canvas>
+    <div id="loading">Loading Chandanpur…</div>
+  </div>
+  <div class="bar">
+    <span><b>Fight for the Seat</b> · C++ and raylib, compiled to WebAssembly · click the game to give it the keyboard</span>
+    <span><kbd>A</kbd>/<kbd>D</kbd> walk · <kbd>E</kbd> talk · <kbd>F</kbd> namaste · <kbd>R</kbd> rally · <kbd>H</kbd> help</span>
+  </div>
+  <p class="bar">All candidates, parties and places in this game are fictional. Font: Hind by Indian Type Foundry (SIL Open Font License).</p>
+</div>
+
+<script>
+  var canvas = document.getElementById('canvas');
+  canvas.addEventListener('click', function () { canvas.focus(); });
+  var Module = {
+    canvas: canvas,
+    print: function (t) { if (location.hash === '#test') console.log(t); },
+    printErr: function (t) { if (location.hash === '#test') console.warn(t); },
+    setStatus: function (s) { var el = document.getElementById('loading'); if (el) el.textContent = s ? 'Loading Chandanpur… ' : ''; },
+    onRuntimeInitialized: function () { var el = document.getElementById('loading'); if (el) el.remove(); canvas.focus(); }
+  };
+  window.addEventListener('keydown', function (e) {
+    if (document.activeElement === canvas && ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','Tab'].indexOf(e.key) >= 0) e.preventDefault();
+  });
+</script>
+<script src="game.js"></script>

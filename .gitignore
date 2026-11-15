@@ -1,0 +1,9 @@
+# Toolchain downloads and local tooling
+tools/
+.claude/
+
+# Build outputs (rebuild with the scripts in cpp/)
+cpp/build/
+cpp/dist/
+*.exe
+*.o

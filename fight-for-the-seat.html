@@ -1,0 +1,1096 @@
+<title>Fight for the Seat</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Yatra+One&display=swap">
+<style>
+/* Layout: campaign war-room. Constituency map on the left, the day's field desk on the right, the local paper below.
+   Hand-painted wall-slogan display type, indelible-ink violet as the one accent, marigold for crowd hype. */
+:root{
+  --paper:#F3F1F6; --card:#FFFFFF; --sunk:#EAE6F0; --ink:#1D1727; --muted:#5F5770; --line:#DAD3E3;
+  --accent:#5B2EA6; --accent-ink:#FFFFFF; --accent-soft:#ECE4F8;
+  --marigold:#C97F00; --marigold-soft:#FCEFD2;
+  --good:#1D7A4C; --bad:#B42318; --good-soft:#E1F2E8; --bad-soft:#FBE4E1;
+  --led:#E5322D; --led-off:#5A1E1C; --evm:#CFD3DA; --evm-edge:#B4B9C2; --btn-blue:#1F4FB8;
+  --c-you:#5B2EA6; --c-pd:#127B78; --c-lkm:#C0346A; --c-ind:#94701A; --c-nota:#7A7486;
+  --river:#86AEDB; --map:#E4E0EA;
+  --display:'Yatra One','Hind',Georgia,serif;
+  --body:'Hind','Segoe UI',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#13101A; --card:#1C1826; --sunk:#252033; --ink:#EEE9F5; --muted:#A69DB8; --line:#342D44;
+    --accent:#A783F2; --accent-ink:#160F24; --accent-soft:#2B2140;
+    --marigold:#F0B23E; --marigold-soft:#3A2B10;
+    --good:#5BC48C; --bad:#F27166; --good-soft:#15301F; --bad-soft:#3A1715;
+    --led:#FF5A52; --led-off:#3A1514; --evm:#3A3E47; --evm-edge:#2A2D34; --btn-blue:#4C7BE0;
+    --c-you:#A783F2; --c-pd:#3DB8B3; --c-lkm:#EE6C9C; --c-ind:#D1A846; --c-nota:#9E97AC;
+    --river:#3B5E86; --map:#221D2D;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#13101A; --card:#1C1826; --sunk:#252033; --ink:#EEE9F5; --muted:#A69DB8; --line:#342D44;
+  --accent:#A783F2; --accent-ink:#160F24; --accent-soft:#2B2140;
+  --marigold:#F0B23E; --marigold-soft:#3A2B10;
+  --good:#5BC48C; --bad:#F27166; --good-soft:#15301F; --bad-soft:#3A1715;
+  --led:#FF5A52; --led-off:#3A1514; --evm:#3A3E47; --evm-edge:#2A2D34; --btn-blue:#4C7BE0;
+  --c-you:#A783F2; --c-pd:#3DB8B3; --c-lkm:#EE6C9C; --c-ind:#D1A846; --c-nota:#9E97AC;
+  --river:#3B5E86; --map:#221D2D;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+button{font:inherit;color:inherit;cursor:pointer}
+button:disabled{cursor:not-allowed}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+.app{max-width:1200px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:10px 20px;font-weight:600}
+.btn:hover:not(:disabled){border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:hover:not(:disabled){filter:brightness(1.08)}
+.btn:disabled{opacity:.45}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.foot{margin-top:28px;font-size:13px;color:var(--muted);text-align:center}
+
+/* ---------- Title ---------- */
+.title{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.9fr);gap:48px;align-items:center;padding-block:40px}
+.big{font-family:var(--display);font-weight:400;font-size:clamp(48px,8vw,92px);line-height:.95;color:var(--accent);margin-block:10px 18px;letter-spacing:-.01em}
+.big span{display:block;color:var(--ink)}
+.lede{font-size:19px;max-width:34ch;color:var(--ink)}
+.how{list-style:none;padding:0;margin:28px 0 0;display:grid;gap:10px;max-width:46ch}
+.how li{display:grid;grid-template-columns:28px 1fr;gap:10px;color:var(--muted);font-size:15px}
+.how b{color:var(--ink);font-weight:600}
+.how .n{font-family:var(--mono);font-size:13px;color:var(--accent);padding-top:2px}
+.cta{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap}
+.cta .btn{padding:14px 28px;font-size:17px}
+
+/* ---------- EVM ballot unit ---------- */
+.bu{background:var(--evm);border:2px solid var(--evm-edge);border-radius:18px;padding:14px 14px 18px;box-shadow:0 18px 40px -24px rgba(20,10,40,.45);max-width:440px;width:100%;justify-self:center}
+.bu-top{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted);padding:0 4px 10px}
+.bu-top .ready{display:inline-flex;align-items:center;gap:6px}
+.bu-top .ready::before{content:"";width:8px;height:8px;border-radius:50%;background:#2fbf5b;box-shadow:0 0 8px #2fbf5b}
+.bu-row{display:grid;grid-template-columns:28px minmax(0,1fr) 42px 22px 58px;align-items:center;gap:8px;padding:6px 4px;border-top:1px solid var(--evm-edge)}
+.bu-row:first-of-type{border-top:0}
+.bu-row .sl{font-family:var(--mono);font-size:13px;color:var(--muted);text-align:center}
+.bu-row .nm{background:var(--card);border-radius:6px;padding:7px 10px;font-weight:600;font-size:15px;line-height:1.2;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bu-row .nm small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.bu-row .sy{background:var(--card);border-radius:6px;height:38px;display:grid;place-items:center;font-size:22px}
+.lamp{width:14px;height:14px;border-radius:50%;background:var(--led-off);justify-self:center;transition:background .15s, box-shadow .15s}
+.lamp.on{background:var(--led);box-shadow:0 0 12px var(--led)}
+.bb{width:54px;height:30px;border-radius:999px;background:var(--btn-blue);border:0;box-shadow:inset 0 -3px 0 rgba(0,0,0,.25)}
+button.bb:hover:not(:disabled){filter:brightness(1.15)}
+button.bb:active:not(:disabled){transform:translateY(1px);box-shadow:inset 0 -1px 0 rgba(0,0,0,.25)}
+.bu-row.me .nm{outline:2px solid var(--accent)}
+
+/* ---------- Setup ---------- */
+.setup{max-width:860px;margin:0 auto;padding-block:20px}
+.setup h2{font-family:var(--display);font-weight:400;font-size:clamp(34px,5vw,48px);color:var(--accent)}
+.form{display:grid;gap:26px;margin-top:22px}
+.field label,.field .lbl{display:block;font-weight:600;margin-bottom:8px}
+.field .hint{font-size:14px;color:var(--muted);margin-top:-4px;margin-bottom:8px}
+.field input{width:100%;font:inherit;font-size:17px;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.field input:focus{border-color:var(--accent);outline:none}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tiles{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+.tiles.sym{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}
+.tile{text-align:left;border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:12px 14px;display:grid;gap:2px}
+.tile b{font-weight:600}
+.tile span{font-size:13.5px;color:var(--muted);line-height:1.35}
+.tile .em{font-size:26px;line-height:1}
+.tile[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.tiles.sym .tile{justify-items:center;text-align:center}
+
+/* ---------- Game header ---------- */
+.top{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:flex-end;justify-content:space-between;padding-bottom:16px;border-bottom:2px solid var(--ink);margin-bottom:18px}
+.logo{font-family:var(--display);font-weight:400;font-size:30px;color:var(--accent);line-height:1}
+.seat{font-size:14px;color:var(--muted);margin-top:4px}
+.status{display:flex;flex-wrap:wrap;gap:8px 22px}
+.stat{display:grid;gap:2px;min-width:0}
+.stat .k{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.stat .v{font-family:var(--mono);font-weight:600;font-size:20px;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat .v small{font-size:13px;color:var(--muted)}
+.stat .note{font-size:12.5px;color:var(--muted)}
+.stat .note.warn{color:var(--bad);font-weight:600}
+.pips{display:flex;gap:5px;padding-top:4px}
+.pip{width:14px;height:14px;border-radius:50%;border:2px solid var(--accent)}
+.pip.full{background:var(--accent)}
+.meter{width:96px;height:8px;border-radius:99px;background:var(--sunk);overflow:hidden;margin-top:7px}
+.meter i{display:block;height:100%;border-radius:99px;transition:width .4s}
+.inkdots{display:flex;gap:5px;padding-top:4px}
+.inkdots i{width:14px;height:14px;border-radius:3px;border:2px solid var(--line)}
+.inkdots i.on{background:var(--bad);border-color:var(--bad)}
+.iconbtn{border:1.5px solid var(--line);background:var(--card);border-radius:8px;padding:4px 10px;font-size:13px;font-weight:600}
+
+/* ---------- Game grid ---------- */
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:18px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.card-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.card-h h2{font-size:19px;font-weight:700}
+.card h3{font-size:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px}
+.tag{font-size:12px;font-weight:600;border-radius:99px;padding:3px 10px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.tag.ok{background:var(--good-soft);color:var(--good)}
+.left{display:grid;gap:18px;min-width:0}
+.desk{display:grid;gap:18px;min-width:0}
+.mapwrap{border-radius:10px;overflow:hidden;background:var(--map)}
+.mapwrap svg{display:block;width:100%;height:auto}
+.reg{cursor:pointer;stroke:var(--card);stroke-width:2;transition:fill-opacity .3s}
+.reg:hover{fill-opacity:.75 !important}
+.reg.sel{stroke:var(--ink);stroke-width:3.5}
+.maplbl{font-family:var(--body);font-weight:700;font-size:12px;fill:var(--ink);paint-order:stroke;stroke:var(--map);stroke-width:3px;pointer-events:none}
+.maplbl.s{font-weight:500;font-size:11px;font-family:var(--mono)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+.bars{display:grid;gap:7px}
+.bar{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr) 54px;align-items:center;gap:10px;font-size:14px}
+.bar .who{display:flex;align-items:center;gap:6px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .who b{font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.bar .track{height:12px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.bar .track i{display:block;height:100%;border-radius:99px;transition:width .5s}
+.bar .pct{font-family:var(--mono);font-size:13.5px;text-align:right;font-variant-numeric:tabular-nums}
+
+.region .sub{font-size:14px;color:var(--muted)}
+.region .voters{text-align:right;font-size:13px;color:var(--muted);white-space:nowrap}
+.region .voters b{display:block;font-family:var(--mono);font-size:18px;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:13px;border-radius:99px;padding:3px 10px;background:var(--sunk);color:var(--ink)}
+.chip.hot{background:var(--marigold-soft);color:var(--ink);font-weight:600}
+.chip.done{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13.5px;color:var(--muted);margin-top:12px}
+.meta b{color:var(--ink);font-weight:600}
+
+.regtabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;scrollbar-width:thin}
+.regtab{flex:none;border:1.5px solid var(--line);background:var(--card);border-radius:99px;padding:5px 12px;font-size:13.5px;font-weight:600;white-space:nowrap}
+.regtab[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.acts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.act{text-align:left;border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:10px 12px;display:grid;gap:3px;align-content:start;min-width:0}
+.act:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+.act:disabled{opacity:.5}
+.act .an{font-weight:700;font-size:15px;display:flex;justify-content:space-between;gap:8px}
+.act .ad{font-size:13px;color:var(--muted);line-height:1.35}
+.act .ac{display:flex;gap:10px;font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:2px}
+.act .ac .e{color:var(--accent);font-weight:600}
+.act .why{font-size:12px;color:var(--bad);font-weight:600}
+.act.shady{border-style:dashed}
+.endday{margin-top:14px;width:100%;padding:14px;border-radius:10px;border:0;background:var(--ink);color:var(--paper);font-weight:700;font-size:16px}
+.endday:hover{filter:brightness(1.15)}
+
+.news{grid-column:1 / -1}
+.masthead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:3px double var(--ink);padding-bottom:6px;margin-bottom:10px;flex-wrap:wrap}
+.masthead h2{font-family:var(--display);font-weight:400;font-size:26px}
+.masthead span{font-size:13px;color:var(--muted)}
+.log{list-style:none;padding:0;margin:0;display:grid;gap:0;max-height:300px;overflow-y:auto}
+.log li{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:14.5px}
+.log li:first-child{border-top:0}
+.log .d{font-family:var(--mono);font-size:12px;color:var(--muted);padding-top:3px}
+.log li.good .t{color:var(--ink)}
+.log li.good .t::before{content:"▲ ";color:var(--good);font-size:11px}
+.log li.bad .t::before{content:"▼ ";color:var(--bad);font-size:11px}
+.log li.rival .t{color:var(--muted)}
+.log li.info .t{font-weight:600}
+
+/* ---------- Modal ---------- */
+#modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+#modal[hidden]{display:none!important}
+.scrim{position:absolute;inset:0;background:rgba(15,8,28,.55)}
+.dialog{position:relative;background:var(--card);border-radius:16px;max-width:560px;width:100%;max-height:100%;overflow-y:auto;padding:24px;border-top:6px solid var(--accent);box-shadow:0 30px 60px -20px rgba(0,0,0,.5);animation:pop .22s ease-out}
+@keyframes pop{from{transform:translateY(10px) scale(.98);opacity:.6}to{transform:none;opacity:1}}
+.kicker{font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--bad)}
+.dialog h2{font-family:var(--display);font-weight:400;font-size:28px;line-height:1.15;margin:6px 0 10px}
+.mbody{display:grid;gap:10px;color:var(--ink)}
+.mbody .muted{color:var(--muted);font-size:14.5px}
+.opts{display:grid;gap:8px;margin-top:18px}
+.opt{text-align:left;border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:11px 14px;display:grid;gap:2px}
+.opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+.opt:disabled{opacity:.45}
+.opt .ol{font-weight:600}
+.opt .os{font-size:13px;color:var(--muted)}
+.opt.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.opt.primary .os{color:var(--accent-ink);opacity:.85}
+.opt.primary:hover:not(:disabled){background:var(--accent);filter:brightness(1.08)}
+.fx{display:flex;flex-wrap:wrap;gap:6px}
+.fx span{font-size:13px;font-weight:600;border-radius:6px;padding:2px 8px}
+.fx .up{background:var(--good-soft);color:var(--good)}
+.fx .dn{background:var(--bad-soft);color:var(--bad)}
+
+/* ---------- Polling & counting ---------- */
+.stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;align-items:center;padding-block:28px}
+.stage h2,.cnt h2,.res h2.head{font-family:var(--display);font-weight:400;font-size:clamp(36px,5.5vw,58px);line-height:1;color:var(--accent)}
+.stage p{max-width:44ch}
+.stage .copy{display:grid;gap:14px}
+.vvpat{margin-top:14px;background:var(--sunk);border-radius:10px;padding:12px;display:flex;gap:14px;align-items:center;min-height:84px}
+.slip{background:var(--card);border:1px dashed var(--line);border-radius:4px;padding:8px 12px;font-family:var(--mono);font-size:13px;animation:drop 7s ease-in forwards}
+@keyframes drop{0%{transform:translateY(-14px);opacity:0}8%{transform:none;opacity:1}88%{transform:none;opacity:1}100%{transform:translateY(30px);opacity:0}}
+.turnout{display:grid;gap:6px;margin-top:6px}
+.cnt{padding-block:16px}
+.cnt-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.round{font-family:var(--mono);font-size:15px;color:var(--muted)}
+.round b{color:var(--ink);font-size:22px}
+.tally{display:grid;gap:10px}
+.trow{display:grid;grid-template-columns:44px minmax(0,1fr) minmax(90px,auto) 120px;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;transition:transform .3s}
+.trow .sy{font-size:28px;text-align:center}
+.trow .nm b{display:block;font-weight:700;font-size:17px}
+.trow .nm span{font-size:13px;color:var(--muted)}
+.trow .vt{font-family:var(--mono);font-weight:600;font-size:24px;text-align:right;font-variant-numeric:tabular-nums}
+.trow .st{justify-self:end;font-size:13px;font-weight:700;border-radius:99px;padding:4px 10px;white-space:nowrap}
+.st.lead{background:var(--good-soft);color:var(--good)}
+.st.trail{background:var(--sunk);color:var(--muted)}
+.trow .bar2{grid-column:2 / -1;height:6px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.trow .bar2 i{display:block;height:100%;transition:width .6s}
+.trow.you{border-color:var(--accent);box-shadow:inset 4px 0 0 var(--accent)}
+.where{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14px;color:var(--muted);margin:14px 0}
+.ctrl{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+
+/* ---------- Result ---------- */
+.res{padding-block:18px;display:grid;gap:22px}
+.front{border-top:3px double var(--ink);border-bottom:1px solid var(--ink);padding-block:14px;display:grid;gap:8px}
+.front .paper{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);gap:12px;flex-wrap:wrap}
+.front h2.head{color:var(--ink)}
+.front .deck{font-size:18px;max-width:60ch}
+.rgrid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start}
+.cert{background:var(--card);border:2px solid var(--accent);border-radius:6px;padding:22px;position:relative;outline:6px double var(--accent-soft);outline-offset:-12px}
+.cert .f{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted);text-align:center}
+.cert h3{font-family:var(--display);font-weight:400;font-size:26px;text-align:center;color:var(--accent);margin:6px 0 12px;text-transform:none;letter-spacing:0}
+.cert p{font-size:15px}
+.stamp{display:inline-block;border:3px solid var(--bad);color:var(--bad);font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:6px;transform:rotate(-4deg);font-size:15px}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:right;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.num{font-family:var(--mono)}
+td .win{font-weight:700}
+.statlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.statlist div{background:var(--sunk);border-radius:10px;padding:10px 12px}
+.statlist b{display:block;font-family:var(--mono);font-size:20px}
+.statlist span{font-size:13px;color:var(--muted)}
+
+@media (max-width:880px){
+  .title,.stage{grid-template-columns:1fr;gap:28px}
+  .grid,.rgrid{grid-template-columns:1fr}
+  .title{padding-block:16px}
+}
+@media (max-width:520px){
+  .acts{grid-template-columns:1fr}
+  .two{grid-template-columns:1fr}
+  .bar{grid-template-columns:minmax(0,110px) minmax(0,1fr) 48px}
+  .trow{grid-template-columns:34px minmax(0,1fr) auto;padding:10px 12px;gap:10px}
+  .trow .st{grid-column:2 / -1;justify-self:start}
+  .trow .vt{font-size:19px}
+  .bu-row{grid-template-columns:22px minmax(0,1fr) 36px 18px 48px;gap:6px}
+  .status{gap:8px 16px}
+  .meter{width:72px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+
+<div class="app" id="app"></div>
+<div id="modal" hidden></div>
+
+<script>
+/* ================= Data ================= */
+const REGIONS=[
+  {id:'uni', name:'University Road', sub:'Colleges, coaching centres and PG hostels', voters:24000, turnout:.54,
+   blocs:{youth:.6,middle:.2,women:.12,traders:.08}, issues:{jobs:3,education:3,safety:2,corruption:2}},
+  {id:'town',name:'New Township', sub:'Gated societies around the IT park', voters:28000, turnout:.50,
+   blocs:{middle:.5,youth:.25,women:.15,traders:.1}, issues:{roads:3,corruption:3,safety:2,education:1,water:1}},
+  {id:'old', name:'Purana Shahar', sub:'Bazaars and old mohallas', voters:38000, turnout:.61,
+   blocs:{traders:.35,workers:.25,women:.22,youth:.18}, issues:{prices:3,water:3,roads:2,safety:1}},
+  {id:'mill',name:'Mill Colony', sub:'Chawls around the shut textile mill', voters:30000, turnout:.63,
+   blocs:{workers:.55,women:.2,youth:.15,traders:.1}, issues:{jobs:3,prices:2,water:2,safety:1}},
+  {id:'gaon',name:'Gaon Belt', sub:'22 villages along the Chandan river', voters:52000, turnout:.69,
+   blocs:{farmers:.5,women:.25,youth:.15,workers:.1}, issues:{farm:3,water:3,roads:2,jobs:1}},
+];
+const ISSUES={
+  jobs:{label:'Jobs', promise:'Reopen the textile mill and open a skills centre'},
+  prices:{label:'Price rise', promise:'Cheaper cooking gas and full ration on every card'},
+  water:{label:'Drinking water', promise:'Piped water to every home within two years'},
+  roads:{label:'Roads', promise:'Pothole-free roads and a railway overbridge'},
+  farm:{label:'Crop prices', promise:'Guaranteed MSP procurement for wheat and mustard'},
+  education:{label:'Education', promise:'A government degree college with a girls’ hostel'},
+  safety:{label:'Women’s safety', promise:'Streetlights and a women’s police helpdesk in every ward'},
+  corruption:{label:'Corruption', promise:'Publish every rupee of the MP fund (MPLADS) online'},
+};
+const BLOC={farmers:'Farmers',traders:'Traders',youth:'Youth',workers:'Workers',women:'Women',middle:'Middle class'};
+const GROUPS=[
+  {id:'kisan', name:'Chandanpur Kisan Union', bloc:'farmers', wants:'farm'},
+  {id:'vyapari', name:'Vyapari Mandal (traders)', bloc:'traders', wants:'corruption'},
+  {id:'chhatra', name:'Chhatra Sangh (students)', bloc:'youth', wants:'education'},
+  {id:'mazdoor', name:'Mill Mazdoor Union', bloc:'workers', wants:'jobs'},
+  {id:'mahila', name:'Mahila Mandal', bloc:'women', wants:'safety'},
+  {id:'rwa', name:'RWA Federation', bloc:'middle', wants:'roads'},
+];
+const RIVALS={
+  pd:{name:'Gajendra Prakash', party:'Pragati Dal', short:'Prakash', sym:'⚙️', str:1.25, turn:1.06,
+      aff:{uni:.6,town:.8,old:1.1,mill:.9,gaon:1.3},
+      verbs:['held a massive rally','inaugurated a half-built flyover','handed out ration kits','led a bike rally','met the sarpanches']},
+  lkm:{name:'Adv. Sunita Rao', party:'Lok Kalyan Morcha', short:'Rao', sym:'🕯️', str:1.1, turn:.97,
+      aff:{uni:1.4,town:1.3,old:.8,mill:.9,gaon:.7},
+      verbs:['led a candle march','held a town hall','released a policy paper','went door to door','spoke at a college fest']},
+  ind:{name:'Bhola Pehelwan', party:'Independent', short:'Bhola', sym:'🫖', str:.85, turn:1.02,
+      aff:{uni:.5,town:.4,old:1.2,mill:1.4,gaon:.9},
+      verbs:['staged a wrestling dangal','threw a community feast','toured on a motorbike convoy','held court at the akhada']},
+};
+const CANDS=['you','pd','lkm','ind'];
+const DIFFS={easy:{label:'Councillor',sub:'Rivals campaign half-heartedly',D:.8},
+             normal:{label:'MLA',sub:'A fair, tough fight',D:1.2},
+             hard:{label:'Chanakya',sub:'Rivals are relentless',D:1.7}};
+const BGS={
+  activist:{label:'Social activist', sub:'Reputation 75 · ₹15L · padyatras hit 30% harder', rep:75, funds:15, hype:5},
+  business:{label:'Businessperson', sub:'Reputation 55 · ₹50L war chest', rep:55, funds:50, hype:5},
+  star:{label:'Film star', sub:'Reputation 55 · ₹28L · starts famous, rallies hit harder', rep:55, funds:28, hype:30},
+  ias:{label:'Retired IAS officer', sub:'Reputation 70 · ₹20L · voters trust your first 5 promises', rep:70, funds:20, hype:0},
+};
+const SYMBOLS=[['🪔','Diya'],['🌻','Sunflower'],['🚀','Rocket'],['🌳','Banyan tree'],['⚖️','Scales'],['🔔','Bell']];
+const EC_LIMIT=95;
+const ACTIONS=[
+  {id:'padyatra', name:'Padyatra', desc:'Walk the lanes, fold hands, drink forty cups of chai.', ap:2, cost:.5, region:true, silenceOK:true},
+  {id:'rally', name:'Jansabha rally', desc:'Stage, loudspeakers, marigold garlands, a crowd.', ap:2, cost:6, region:true},
+  {id:'roadshow', name:'Roadshow', desc:'Open jeep, rose petals, traffic jams.', ap:1, cost:4, region:true},
+  {id:'booth', name:'Train booth agents', desc:'Polling agents who get your voters out on the day.', ap:1, cost:2, region:true, silenceOK:true},
+  {id:'social', name:'Social media blitz', desc:'Reels, WhatsApp forwards and a catchy jingle. Seat-wide, strongest with youth.', ap:1, cost:3},
+  {id:'promise', name:'Make a promise', desc:'Add a line to your manifesto. Seat-wide.', ap:1, cost:0},
+  {id:'endorse', name:'Seek an endorsement', desc:'Win over a union or association.', ap:1, cost:0},
+  {id:'press', name:'Press conference', desc:'Go after a rival on camera.', ap:1, cost:.5},
+  {id:'funds', name:'Raise funds', desc:'Small donors, or the builder lobby.', ap:1, cost:0, silenceOK:true},
+  {id:'survey', name:'Internal survey', desc:'Exact numbers for the next 3 days.', ap:1, cost:2, silenceOK:true},
+  {id:'gifts', name:'Distribute “gifts”', desc:'Cash envelopes and sarees. Election flying squads are watching.', ap:1, cost:7, region:true, shady:true, silenceOK:true},
+];
+
+/* ================= Helpers ================= */
+const $=s=>document.querySelector(s);
+const rand=(a,b)=>a+Math.random()*(b-a);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const fmt=n=>Math.round(n).toLocaleString('en-IN');
+const L=n=>'₹'+(Math.round(n*10)/10)+'L';
+const R=id=>REGIONS.find(r=>r.id===id);
+const A=id=>ACTIONS.find(a=>a.id===id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function gauss(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function wpick(pairs){const t=pairs.reduce((a,p)=>a+p[1],0);let x=Math.random()*t;for(const p of pairs){x-=p[1];if(x<=0)return p[0];}return pairs[pairs.length-1][0];}
+function cand(k){
+  if(k==='you') return {name:S.name, party:S.party, short:'You', sym:S.sym, col:'var(--c-you)'};
+  if(k==='nota') return {name:'NOTA', party:'None of the above', short:'NOTA', sym:'✖', col:'var(--c-nota)'};
+  const r=RIVALS[k]; return {name:r.name, party:r.party, short:r.short, sym:r.sym, col:`var(--c-${k})`};
+}
+const ordinal=n=>['first','second','third','fourth','fifth'][n-1];
+
+/* ================= Sound ================= */
+let AC=null, muted=false;
+function beep(freq=880,dur=.1,vol=.05,type='square'){
+  if(muted) return;
+  try{
+    AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+    const o=AC.createOscillator(), g=AC.createGain();
+    o.type=type; o.frequency.value=freq; g.gain.value=vol;
+    o.connect(g); g.connect(AC.destination);
+    const t=AC.currentTime; o.start(t);
+    g.gain.setTargetAtTime(0,t+dur*.85,.02); o.stop(t+dur+.15);
+  }catch(e){}
+}
+
+/* ================= State ================= */
+let S={screen:'title'};
+let SETUP={name:'Ravi Kumar', party:'Jan Awaaz Party', sym:SYMBOLS[0][0], bg:'activist', diff:'normal'};
+
+function makeNoise(){const n={};REGIONS.forEach(r=>{n[r.id]={};CANDS.forEach(k=>n[r.id][k]=rand(-6,6));});return n;}
+function newGame(o){
+  const bg=BGS[o.bg];
+  const z=()=>({uni:0,town:0,old:0,mill:0,gaon:0});
+  S={screen:'game', name:o.name, party:o.party, sym:o.sym, bg:o.bg, diff:o.diff,
+    day:1, maxDay:14, ap:3, funds:bg.funds, spent:0, rep:bg.rep, hype:bg.hype, strikes:0,
+    promises:[], endorse:[], builder:false, surveyUntil:0, booth:z(), visits:z(), socialUses:0,
+    score:{uni:{you:10,pd:26,lkm:46,ind:18}, town:{you:10,pd:34,lkm:44,ind:12}, old:{you:8,pd:38,lkm:22,ind:32},
+           mill:{you:8,pd:30,lkm:24,ind:38}, gaon:{you:8,pd:46,lkm:24,ind:22}},
+    noise:makeNoise(), rain:false, selected:'gaon', used:[], log:[],
+    stats:{rally:0,padyatra:0,roadshow:0,gifts:0,press:0}, votedFor:null, result:null, count:null, ended:null, bribedBhola:false};
+  log(`${S.name} files nomination papers for Chandanpur on the ${S.party} ticket.`,'info');
+}
+
+/* ================= Model ================= */
+function exactShares(rid){const sc=S.score[rid];const t=CANDS.reduce((a,k)=>a+sc[k],0);const o={};CANDS.forEach(k=>o[k]=sc[k]/t*100);return o;}
+const surveyed=()=>S.day<=S.surveyUntil;
+function shownShares(rid,exact){
+  const e=exactShares(rid); if(exact||surveyed()) return e;
+  const o={};let t=0;CANDS.forEach(k=>{o[k]=Math.max(1,e[k]+S.noise[rid][k]);t+=o[k];});
+  CANDS.forEach(k=>o[k]=o[k]/t*100); return o;
+}
+function overall(exact){
+  const o={you:0,pd:0,lkm:0,ind:0};let W=0;
+  REGIONS.forEach(r=>{const s=shownShares(r.id,exact);const w=r.voters*r.turnout;W+=w;CANDS.forEach(k=>o[k]+=s[k]*w);});
+  CANDS.forEach(k=>o[k]/=W); return o;
+}
+function mult(){return 0.8*(0.55+S.rep/100*0.9)*(1+S.hype/120);}
+function gain(base,rid,fatigue=true){let g=base*mult()*rand(.85,1.15);if(fatigue&&rid) g/=(1+S.visits[rid]*0.07);return g;}
+function addYou(rid,pts,steal=.3){
+  const sc=S.score[rid];
+  if(pts<0){sc.you=Math.max(1,sc.you+pts);return;}
+  sc.you+=pts;
+  const rv=['pd','lkm','ind'];const t=rv.reduce((a,k)=>a+sc[k],0);
+  rv.forEach(k=>sc[k]=Math.max(1,sc[k]-pts*steal*sc[k]/t));
+}
+function hit(k,rid,pts){
+  const list=rid?[rid]:REGIONS.map(r=>r.id);
+  list.forEach(id=>S.score[id][k]=Math.max(1,S.score[id][k]+(pts<0?-pts:-pts)*1));
+}
+function boost(k,rid,pts){const list=rid?[rid]:REGIONS.map(r=>r.id);list.forEach(id=>S.score[id][k]+=pts);}
+function everywhere(base){REGIONS.forEach(r=>addYou(r.id,gain(base,null,false)));}
+function log(text,tone=''){S.log.unshift({day:S.day||1,text,tone});if(S.log.length>80)S.log.pop();}
+function normalize(){
+  S.rep=clamp(S.rep,0,100);S.hype=clamp(S.hype,0,60);S.funds=Math.max(0,S.funds);S.ap=Math.max(0,S.ap);
+  if(S.strikes>=3&&S.screen==='game'){S.ended='dq';S.screen='result';}
+}
+function spend(c){S.funds-=c;S.spent+=c;}
+
+/* ================= Rivals ================= */
+function rivalsAct(){
+  const D=DIFFS[S.diff].D;const bits=[];
+  for(const k of ['pd','lkm','ind']){
+    const rv=RIVALS[k];
+    REGIONS.forEach(r=>S.score[r.id][k]+=rv.str*rv.aff[r.id]*rand(.5,1.3)*D);
+    const f=wpick(REGIONS.map(r=>[r.id,rv.aff[r.id]]));
+    S.score[f][k]+=4.5*D*rand(.7,1.3);
+    if(!(k==='ind'&&S.bribedBhola)) bits.push(`${rv.short} ${pick(rv.verbs)} in ${R(f).name}`);
+  }
+  log('Rival trail: '+bits.join('. ')+'.','rival');
+  const ov=overall(true);
+  if(S.day>=5&&ov.you>=Math.max(ov.pd,ov.lkm,ov.ind)){
+    REGIONS.forEach(r=>S.score[r.id].you=Math.max(1,S.score[r.id].you-1.3*D));
+    log('All three rivals are now attacking you. Being the front-runner has a price.','bad');
+  }
+}
+
+/* ================= Actions ================= */
+function blocked(a){
+  if(S.ap<a.ap) return 'Not enough energy today';
+  if(S.funds<a.cost) return 'Not enough funds';
+  if(S.day===S.maxDay&&!a.silenceOK) return 'Banned during campaign silence';
+  if(a.id==='booth'&&S.booth[S.selected]>=3) return 'Booth teams complete here';
+  if(a.id==='promise'&&S.promises.length>=Object.keys(ISSUES).length) return 'Manifesto is full';
+  if(a.id==='endorse'&&S.endorse.length>=GROUPS.length) return 'Every group has picked a side';
+  if(a.id==='survey'&&surveyed()) return 'Current survey still valid';
+  return '';
+}
+function doAct(id){
+  const a=A(id);if(!a||blocked(a)) return;
+  if(['promise','endorse','press','funds'].includes(id)) return chooser(id);
+  const r=S.selected, rn=R(r).name;
+  S.ap-=a.ap; spend(a.cost);
+  let msg='',tone='good';
+  switch(id){
+    case 'padyatra':{
+      addYou(r,gain(6.5,r)*(S.bg==='activist'?1.3:1));S.rep+=1;S.stats.padyatra++;
+      msg=`Padyatra through ${rn}. ${pick(['An aunty fed you three parathas and a lecture on drainage.','You learnt the name of every chaiwala on the route.','Blisters on both feet, goodwill in every lane.','A grandmother blessed you and asked you to fix the handpump.'])}`;break;}
+    case 'rally':{
+      let base=11*(S.bg==='star'?1.25:1);if(S.rain)base*=.5;S.stats.rally++;
+      if(S.hype<12&&Math.random()<.3){addYou(r,gain(3,r));S.hype-=4;tone='bad';
+        msg=`Flop show in ${rn}. Half the plastic chairs stayed empty and the drone footage made it look worse.`;}
+      else{addYou(r,gain(base,r));S.hype+=8;
+        msg=`Jansabha in ${rn}: ${pick(['the ground overflowed onto the highway.','garlands piled taller than you.','the crowd chanted your slogan back at you.','the loudspeakers carried your speech three villages over.'])}${S.rain?' Rain cut the crowd in half.':''}`;}
+      break;}
+    case 'roadshow':{
+      addYou(r,gain(S.rain?2.8:5.5,r)*(S.bg==='star'?1.25:1));S.hype+=4;S.stats.roadshow++;
+      msg=`Roadshow through ${rn}. ${pick(['Rose petals everywhere.','Traffic stuck for two hours, mostly forgiven.','Kids ran beside the jeep the whole way.'])}`;break;}
+    case 'booth':{
+      S.booth[r]++;msg=`Booth agents trained in ${rn} (team ${S.booth[r]} of 3). They will knock on doors on polling morning.`;break;}
+    case 'social':{
+      const f=1/(1+S.socialUses*.15);S.socialUses++;
+      REGIONS.forEach(x=>{const w=(x.blocs.youth||0)+(x.blocs.middle||0)*.8;addYou(x.id,gain(7*w*f,null,false));});
+      S.hype+=4;
+      if(Math.random()<.12){S.rep-=4;tone='bad';msg='Your campaign reel went viral, for a spelling mistake in the caption. The trolls are having a field day.';}
+      else msg=pick(['Your campaign jingle is stuck in every college student’s head.','A reel of you dancing at a baraat crosses 4 lakh views.','WhatsApp uncles forward your manifesto card to every family group.']);
+      break;}
+    case 'survey':{S.surveyUntil=S.day+2;msg='Internal survey commissioned. The map now shows exact numbers until day '+Math.min(S.surveyUntil,S.maxDay)+'.';tone='info';break;}
+    case 'gifts':{
+      addYou(r,gain(12,r,false));S.rep-=2;S.stats.gifts++;S.spent-=a.cost; // off the books
+      const p=S.day===S.maxDay?.45:.3;
+      if(Math.random()<p){S.strikes++;S.rep-=12;tone='bad';
+        msg=`Election flying squad seizes cash and 400 sarees from your worker’s car in ${rn}. The Election Commission issues you a notice (${S.strikes} of 3).`;}
+      else msg=`Envelopes went out quietly in ${rn}. Nobody saw anything. Probably.`;
+      break;}
+  }
+  if(a.region&&id!=='booth') S.visits[r]++;
+  log(msg,tone);normalize();render();
+}
+function chooser(id){
+  const back={label:'Back',sub:'Keep your energy',fn:()=>{}};
+  if(id==='promise'){
+    const free=S.bg==='ias'?5:3;const over=S.promises.length>=free;
+    showModal({kicker:'Manifesto',title:'Make a promise',
+      body:`<p>Each promise wins votes where that issue matters. ${over?'<b>Voters are getting sceptical: each new promise now costs 3 reputation.</b>':`Your first ${free} promises are believed. After that, each one costs reputation.`}</p>`,
+      options:Object.entries(ISSUES).filter(([k])=>!S.promises.includes(k)).map(([k,v])=>({
+        label:v.promise, sub:`${v.label} · matters most in ${REGIONS.filter(r=>(r.issues[k]||0)>=3).map(r=>r.name).join(', ')||'scattered pockets'}`,
+        fn:()=>{S.ap-=1;return makePromise(k);}})).concat([back])});
+  }
+  if(id==='endorse'){
+    showModal({kicker:'Endorsements',title:'Seek an endorsement',
+      body:'<p>Each group delivers votes from its community across the seat. They want a promise on their issue. Without one, they expect you to sponsor their annual function: ₹5L and some reputation.</p>',
+      options:GROUPS.filter(g=>!S.endorse.includes(g.id)).map(g=>{
+        const ok=S.promises.includes(g.wants);
+        return {label:g.name, sub:`${BLOC[g.bloc]} · wants a promise on ${ISSUES[g.wants].label}: ${ok?'done, they back you for free':'not made, ₹5L sponsorship'}`,
+          disabled:!ok&&S.funds<5,
+          fn:()=>{S.ap-=1;if(!ok){spend(5);S.rep-=3;}S.endorse.push(g.id);
+            REGIONS.forEach(r=>{const s=r.blocs[g.bloc]||0;if(s)addYou(r.id,gain(16*s,null,false));});
+            return `${g.name} endorses ${S.name}${ok?'':' after a generous sponsorship of their annual function'}. ${BLOC[g.bloc]} across Chandanpur take note.`;}};
+      }).concat([back])});
+  }
+  if(id==='press'){
+    showModal({kicker:'Press conference',title:'Who do you go after?',
+      body:'<p>A good attack lowers a rival everywhere and builds hype. Push too hard and you may get a defamation notice.</p>',
+      options:['pd','lkm','ind'].map(k=>({label:`${RIVALS[k].name} (${RIVALS[k].party})`,
+        sub:{pd:'Ten years as MP, the flyover still unfinished',lkm:'Lawyer from the city; calls herself a local',ind:'Strongman with pending police cases'}[k],
+        fn:()=>{S.ap-=1;spend(.5);S.stats.press++;S.hype+=5;
+          if(Math.random()<.22){S.rep-=5;return `${RIVALS[k].short}’s lawyers send you a defamation notice. Channels replay your worst line all evening.`;}
+          hit(k,null,2.4*rand(.8,1.2));return pick([`Your press conference on ${RIVALS[k].short} leads the 9 o’clock news.`,`Your one-liner about ${RIVALS[k].short} is trending in Chandanpur.`]);}})).concat([back])});
+  }
+  if(id==='funds'){
+    const small=Math.round((3+S.rep/25)*10)/10;
+    showModal({kicker:'Fundraising',title:'Raise funds',
+      body:`<p>Your campaign has ${L(S.funds)}. Declared spending so far is ${L(S.spent)} of the ${L(EC_LIMIT)} Election Commission limit.</p>`,
+      options:[
+        {label:`Small donors: +${L(small)}`,sub:'Shopkeepers, teachers, a WhatsApp appeal. More if your reputation is high.',fn:()=>{S.ap-=1;S.funds+=small;return `A thousand small donations add up to ${L(small)}.`;}},
+        {label:'Builder lobby: +₹12L',sub:'Fast money. Reputation −5, and they will want a favour later.',fn:()=>{S.ap-=1;S.funds+=12;S.rep-=5;S.builder=true;return 'A builder drops off ₹12L in a sweet box. He smiles like a man who will call again.';}},
+        back]});
+  }
+}
+function makePromise(k){
+  S.promises.push(k);
+  REGIONS.forEach(r=>{const w=r.issues[k]||0;if(w)addYou(r.id,gain(1.8*w,null,false));});
+  let extra='';const free=S.bg==='ias'?5:3;
+  if(S.promises.length>free){S.rep-=3;extra=' Some voters roll their eyes: how will you pay for all this?';}
+  return `New manifesto promise: “${ISSUES[k].promise}.”${extra}`;
+}
+
+/* ================= Day cycle ================= */
+function endDay(){
+  if(S.day>=S.maxDay){goPolling();return;}
+  rivalsAct();
+  S.hype=clamp(S.hype*.85,0,60);
+  S.day++;S.ap=3;S.rain=false;S.noise=makeNoise();
+  normalize();render();window.scrollTo({top:0,behavior:'smooth'});
+  maybeEvent();
+}
+function maybeEvent(){
+  if(S.day===5||S.day===10) return pollEvent();
+  if(S.day===8) return debateEvent();
+  if(S.day===S.maxDay) return showModal({kicker:'Day 14 · Model Code of Conduct',title:'Campaign silence begins',
+    body:'<p>For the last 48 hours before polling, public campaigning stops. No rallies, roadshows, press conferences, social media campaigns or new promises.</p><p class="muted">You can still walk door to door, train booth agents, raise funds and run a survey. This is also the night when “gifts” change hands, and the flying squads know it.</p>',
+    options:[{label:'Understood',primary:true,fn:()=>{}}]});
+  const forced=EVENTS.find(e=>e.id==='builder'&&!S.used.includes('builder')&&e.cond());
+  if(forced&&Math.random()<.5) return runEvent(forced);
+  if(Math.random()<.72){
+    const pool=EVENTS.filter(e=>!S.used.includes(e.id)&&(!e.cond||e.cond()));
+    if(pool.length) runEvent(pick(pool));
+  }
+}
+
+/* ================= Events ================= */
+const EVENTS=[
+  {id:'pipe',region:()=>pick(['old','mill','gaon']),title:'Pipeline burst',
+   text:r=>`A main water line has burst in ${R(r).name}. Taps are dry, buckets are out and tempers are short.`,
+   choices:[
+    {label:'Arrive with water tankers',cost:3,fn:r=>{addYou(r,gain(9,r,false));S.rep+=3;return `Photos of you handing out water in ${R(r).name} are on every front page.`;}},
+    {label:'Blame the sitting MP',fn:r=>{hit('pd',r,5);S.hype+=4;return '“Ten years and not one new pipeline,” you thunder. Prakash’s camp is rattled.';}},
+    {label:'Stick to your schedule',fn:r=>{addYou(r,-3);return `People in ${R(r).name} noticed who did not turn up.`;}}]},
+  {id:'deepfake',title:'Deepfake video',
+   text:()=>'A doctored video shows you insulting farmers. It is fake, but it is everywhere.',
+   choices:[
+    {label:'File a cyber-crime complaint and clarify',cost:1,fn:()=>{S.rep+=3;S.hype-=2;return 'Police trace the video to a rival IT cell. Most voters believe you.';}},
+    {label:'Fight memes with memes',cost:2,fn:()=>{S.hype+=7;if(Math.random()<.35){S.rep-=6;return 'It turned into a mud-slinging war. Hype is up, dignity is down.';}return 'Your counter-meme is funnier than the fake. The internet moves on.';}},
+    {label:'Ignore it',fn:()=>{addYou('uni',-3);addYou('town',-3);addYou('gaon',-2);return 'Silence looked like guilt to some voters.';}}]},
+  {id:'farmers',title:'Farmers block the highway',
+   text:()=>'Farmers from the Gaon Belt are on a dharna over crop prices. Tractors line the highway for two kilometres.',
+   choices:[
+    {label:'Join the sit-in',sub:'Costs 1 energy today',ap:1,fn:()=>{addYou('gaon',gain(11,null,false));S.hype+=4;return 'You sat on the tarmac with the farmers until midnight. The Kisan Union notices.';}},
+    {label:'Issue a statement of support',fn:()=>{addYou('gaon',gain(3,null,false));return 'A polite statement. Polite applause.';}},
+    {label:'Stay away',fn:()=>{addYou('gaon',-4);return 'Farmers note your absence.';}}]},
+  {id:'celeb',title:'A TV star offers to campaign',
+   text:()=>'A popular TV serial actor will campaign with you for two days. The fee is ₹10L.',
+   choices:[
+    {label:'Pay the fee',cost:10,fn:()=>{S.hype+=14;addYou('uni',gain(4,null,false));addYou('town',gain(4,null,false));return 'Crowds came for the star and stayed for your speech.';}},
+    {label:'Decline politely',fn:()=>{S.rep+=1;return 'You keep the money for diesel and posters.';}}]},
+  {id:'nephew',title:'Help from party headquarters',
+   text:()=>`${esc(S.party)} headquarters is sending ₹8L. The general secretary’s nephew comes with it, as your “campaign manager”.`,
+   choices:[
+    {label:'Take the money and the nephew',fn:()=>{S.funds+=8;S.rep-=3;return 'The nephew mostly takes selfies, but the money is real.';}},
+    {label:'Refuse both',fn:()=>{S.rep+=4;return 'Local papers praise your independence. Headquarters sulks.';}}]},
+  {id:'defector',cond:()=>S.day>=3,region:()=>pick(REGIONS).id,title:'A defector knocks',
+   text:r=>`A Pragati Dal ward councillor from ${R(r).name} wants to join you, with his supporters.`,
+   choices:[
+    {label:'Welcome him with a garland',fn:r=>{hit('pd',r,6);addYou(r,6);S.rep-=2;return `The councillor switches sides in ${R(r).name}. Some call it opportunism.`;}},
+    {label:'Turn him away',fn:()=>{S.rep+=2;return '“No turncoats,” you say. Editorials approve.';}}]},
+  {id:'muscle',cond:()=>!S.bribedBhola,title:'Trouble in Mill Colony',
+   text:()=>'Bhola Pehelwan’s supporters broke up your corner meeting in Mill Colony and tore your posters.',
+   choices:[
+    {label:'File a police complaint',fn:()=>{S.rep+=3;hit('ind','mill',3);return 'The FIR makes the news. Bhola looks like a bully.';}},
+    {label:'Send your own muscle',fn:()=>{if(Math.random()<.4){S.strikes++;S.rep-=10;return `A street fight breaks out and the EC sends you a notice (${S.strikes} of 3).`;}hit('ind','mill',7);S.hype+=3;return 'Bhola’s men backed off. Nobody was hurt, this time.';}},
+    {label:'Avoid Mill Colony for now',fn:()=>{addYou('mill',-3);return 'Mill workers read it as fear.';}}]},
+  {id:'onion',title:'Onions hit ₹90 a kilo',
+   text:()=>'Onion prices have doubled in a week. Every kitchen in Chandanpur is talking about it.',
+   choices:[
+    {label:'Promise price relief',sub:'Adds the price-rise promise to your manifesto',cond:()=>!S.promises.includes('prices'),fn:()=>makePromise('prices')},
+    {label:'Run cheap-onion stalls',cost:2.5,fn:()=>{addYou('old',gain(5,null,false));addYou('mill',gain(5,null,false));return 'Queues at your onion stalls stretch around the block.';}},
+    {label:'Blame global markets',fn:()=>{S.hype-=2;return 'Nobody wants an economics lecture when dal is plain.';}}]},
+  {id:'cricket',title:'Cricket final at University Road',
+   text:()=>'The inter-college cricket final is on Sunday and the organisers want a chief guest.',
+   choices:[
+    {label:'Sponsor the trophy',cost:2,fn:()=>{addYou('uni',gain(6,null,false));return 'Your symbol is on the trophy and in every team photo.';}},
+    {label:'Be chief guest and face one ball',fn:()=>{if(Math.random()<.5){S.hype+=8;addYou('uni',gain(4,null,false));return 'You hit it for six. The clip is everywhere.';}S.hype+=3;return 'Clean bowled first ball. Even the bowler laughed, and the clip still went viral.';}}]},
+  {id:'rain',title:'Unseasonal rain',
+   text:()=>'Heavy rain lashes Chandanpur. Rallies and roadshows will draw thin crowds today.',
+   onShow:()=>{S.rain=true;},
+   choices:[
+    {label:'Hand out umbrellas with your symbol',cost:2,fn:()=>{S.hype+=4;everywhere(1);return 'A sea of umbrellas with your symbol, on every street.';}},
+    {label:'Plan indoor work today',fn:()=>'You reshuffle the day: meetings indoors, rallies another day.'}]},
+  {id:'speech',cond:()=>S.day>=4,title:'Model Code of Conduct notice',
+   text:()=>'One of your local workers gave an inflammatory speech. The EC has asked you to explain.',
+   choices:[
+    {label:'Expel him and apologise',fn:()=>{S.rep+=2;S.hype-=3;return 'A clean apology. The story dies in a day.';}},
+    {label:'Defend him',fn:()=>{S.hype+=5;if(Math.random()<.5){S.strikes++;S.rep-=6;return `The EC is not amused. Formal notice issued (${S.strikes} of 3).`;}return 'The storm passes. Your base loved the defiance.';}}]},
+  {id:'assets',title:'A reporter asks about your assets',
+   text:()=>'A reporter wants to know why your affidavit lists only one scooter.',
+   choices:[
+    {label:'Publish a full asset statement',fn:()=>{S.rep+=5;return 'Your transparency becomes a talking point. Rivals go quiet on the subject.';}},
+    {label:'Refuse to comment',fn:()=>{S.rep-=4;return '“What is the candidate hiding?” asks tomorrow’s headline.';}}]},
+  {id:'pothole',title:'A school bus stuck in a pothole',
+   text:()=>'A school bus sank axle-deep into a pothole in New Township. No one was hurt, and parents are furious.',
+   choices:[
+    {label:'Fix the road with campaign funds',cost:3,fn:()=>{addYou('town',gain(8,null,false));S.rep+=2;return 'Fresh tarmac by morning. The RWA WhatsApp group is full of thank-yous.';}},
+    {label:'Hold a selfie protest in the pothole',fn:()=>{S.hype+=6;addYou('town',gain(3,null,false));return 'You, ankle-deep in a pothole, holding a placard. It works.';}}]},
+  {id:'builder',cond:()=>S.builder,title:'The builder calls in his favour',
+   text:()=>'Your builder donor wants you to promise that the wetland by the river will be rezoned for his towers.',
+   choices:[
+    {label:'Agree, quietly',fn:()=>{S.funds+=6;S.rep-=8;return 'Another ₹6L arrives. A local journalist starts asking questions.';}},
+    {label:'Refuse',fn:()=>{S.rep+=4;boost('pd',null,3);return 'He takes his money to the Pragati Dal. You keep your conscience.';}}]},
+  {id:'song',title:'Your campaign song goes viral',
+   text:()=>'An auto-rickshaw driver wrote a song about you. It is catchy, slightly off-key and everywhere.',
+   choices:[{label:'Play it at every stop',fn:()=>{S.hype+=10;everywhere(1);return 'The whole constituency is humming it.';}}]},
+  {id:'weddings',title:'Seven wedding invitations',
+   text:()=>'You have seven wedding invitations tonight across the constituency. No politician skips the wedding season.',
+   choices:[
+    {label:'Attend all seven',sub:'Costs 1 energy today',ap:1,fn:()=>{everywhere(2.2);return 'Seven weddings, seven plates of food and a lot of blessings.';}},
+    {label:'Send shagun envelopes',cost:1.5,fn:()=>{everywhere(1);return 'Envelopes sent with your best wishes.';}},
+    {label:'Skip them',fn:()=>'You catch up on sleep. Some aunties will remember this.'}]},
+  {id:'sting',cond:()=>S.day>=6,title:'Sting operation on the Pragati Dal',
+   text:()=>'A sting video shows a Pragati Dal aide promising contracts in exchange for votes.',
+   choices:[
+    {label:'Amplify it everywhere',fn:()=>{S.hype+=5;hit('pd',null,4);if(Math.random()<.25){S.rep-=3;return 'You hammered it so hard some voters felt sorry for Prakash.';}return 'The video plays on loop at every one of your stops.';}},
+    {label:'Stay above it',fn:()=>{S.rep+=3;hit('pd',null,2);return '“Let the voters decide,” you say. It looks statesmanlike.';}}]},
+  {id:'bhola',cond:()=>S.day>=7&&!S.bribedBhola,title:'An offer from Bhola Pehelwan',
+   text:()=>'Bhola Pehelwan sends word: for ₹15L he will “step back” and tell his supporters to vote for you. It is illegal and off the books.',
+   choices:[
+    {label:'Pay him',cost:15,offbook:true,fn:()=>{S.bribedBhola=true;REGIONS.forEach(r=>{const sc=S.score[r.id];const m=sc.ind*.5;sc.ind-=m;sc.you+=m*.7;});
+      if(Math.random()<.3){S.strikes++;S.rep-=15;return `A recording of the deal leaks. The EC issues a notice (${S.strikes} of 3) and voters are disgusted, though Bhola still goes quiet.`;}
+      return 'Bhola stops campaigning and his men start wearing your symbol.';}},
+    {label:'Refuse',fn:()=>{S.rep+=3;return 'You send the messenger back. Bhola vows to make your life hard.';}}]},
+];
+function runEvent(e){
+  S.used.push(e.id);
+  const r=e.region?e.region():null;
+  if(e.onShow) e.onShow(r);
+  const opts=e.choices.filter(c=>!c.cond||c.cond()).map(c=>{
+    const subs=[];if(c.cost)subs.push(L(c.cost));if(c.sub)subs.push(c.sub);
+    return {label:c.label, sub:subs.join(' · '), disabled:(c.cost&&S.funds<c.cost)||(c.ap&&S.ap<c.ap),
+      fn:()=>{if(c.cost){S.funds-=c.cost;if(!c.offbook)S.spent+=c.cost;}if(c.ap)S.ap-=c.ap;return c.fn(r);}};
+  });
+  if(opts.every(o=>o.disabled)) opts.push({label:'Do nothing',fn:()=>'You let this one pass.'});
+  showModal({kicker:`Breaking · Day ${S.day}`, title:e.title, body:`<p>${e.text(r)}</p>`, options:opts});
+}
+function pollEvent(){
+  const ex=overall(true);const o={};let t=0;CANDS.forEach(k=>{o[k]=Math.max(1,ex[k]+rand(-3,3));t+=o[k];});CANDS.forEach(k=>o[k]=o[k]/t*100);
+  const order=[...CANDS].sort((a,b)=>o[b]-o[a]);const pos=order.indexOf('you')+1;
+  let note;
+  if(pos===1) note='You are the front-runner. Expect all three rivals to come after you.';
+  else if(o[order[0]]-o.you<6) note=`You are ${ordinal(pos)}, within striking distance of ${cand(order[0]).name}.`;
+  else {note=`You are ${ordinal(pos)}. The underdog story gives your campaign a small lift.`;S.hype+=3;}
+  log(`Jan Mat survey: ${order.map(k=>`${k==='you'?esc(S.name):cand(k).short} ${o[k].toFixed(0)}%`).join(', ')}.`,'info');
+  showModal({kicker:`Chandanpur Times · Jan Mat survey · Day ${S.day}`,title:pos===1?'Survey puts you ahead':'New survey is out',
+    body:`<div class="bars">${order.map(k=>barRow(k,o[k],false)).join('')}</div><p class="muted">Sample of 2,400 voters, margin of error ±3%. ${note}</p>`,
+    options:[{label:'Back to work',primary:true,fn:()=>{}}]});
+}
+const DEBATE=[
+  {q:'How will you create jobs in Chandanpur?',ctx:'The moderator turns to you first. Three hundred students lean forward.',
+   a:[{t:'Reopen the textile mill as a workers’ cooperative',fx:()=>{addYou('mill',gain(7,null,false));addYou('gaon',gain(2,null,false));return 'Mill Colony cheers';}},
+      {t:'A start-up hub and skills centres near the university',fx:()=>{addYou('uni',gain(7,null,false));addYou('town',gain(3,null,false));return 'Students love it';}},
+      {t:'Tax holidays to bring in a big factory',fx:()=>{addYou('town',gain(4,null,false));addYou('old',gain(3,null,false));return 'Traders nod along';}}]},
+  {q:'Your opponents call you an outsider. Your answer?',ctx:'Prakash smirks. Rao takes notes.',
+   a:[{t:'“I grew up in a Purana Shahar mohalla.”',fx:()=>{addYou('old',gain(5,null,false));S.hype+=3;return 'The old city claims you';}},
+      {t:'“I am an outsider only to corruption.”',fx:()=>{S.hype+=6;addYou('town',gain(3,null,false));return 'The line becomes a headline';}},
+      {t:'List the sitting MP’s ten years of failures',fx:()=>{hit('pd',null,3);S.hype+=4;return 'Prakash stumbles on his reply';}}]},
+  {q:'Water or roads: what comes first?',ctx:'A final question from a student in the back row.',
+   a:[{t:'Water. Always water.',fx:()=>{addYou('gaon',gain(5,null,false));addYou('old',gain(4,null,false));return 'Villages and the old city agree';}},
+      {t:'Roads, because they bring everything else',fx:()=>{addYou('town',gain(5,null,false));addYou('gaon',gain(2,null,false));return 'The township applauds';}},
+      {t:'Both, in my first hundred days',fx:()=>{everywhere(2);S.rep-=3;return 'Big applause, raised eyebrows';}}]},
+];
+function debateEvent(){
+  let i=0;const said=[];
+  const step=()=>{const q=DEBATE[i];
+    showModal({kicker:`Chhatra Sangh debate · Question ${i+1} of ${DEBATE.length}`,title:q.q,body:`<p class="muted">${q.ctx}</p>`,
+      options:q.a.map(o=>({label:o.t,fn:()=>{said.push(o.fx());i++;if(i<DEBATE.length){step();return KEEP;}
+        return `Debate verdict: ${said.join('; ')}. ${pick(['Clips of your answers dominate the evening news.','Rao was sharp, Prakash was rattled, and Bhola did not turn up.'])}`;}}))});
+  };
+  showModal({kicker:'Day 8 · Chandanpur University',title:'Debate night',
+    body:'<p>The Chhatra Sangh has invited every candidate to a live debate. Three questions, one stage, every phone camera in the hall pointed at you.</p>',
+    options:[{label:'Take the stage',primary:true,fn:()=>{step();return KEEP;}},
+      {label:'Skip it',sub:'Rivals will mock your empty chair',fn:()=>{S.hype-=6;addYou('uni',-4);return 'An empty chair with your name on it becomes the photo of the night.';}}]});
+}
+
+/* ================= Modal ================= */
+const KEEP={};
+let MCB=[];
+function showModal(m){
+  MCB=m.options.map(o=>o.fn);
+  const el=$('#modal');el.hidden=false;
+  el.innerHTML=`<div class="scrim"></div><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="mt">
+    ${m.kicker?`<p class="kicker">${m.kicker}</p>`:''}<h2 id="mt">${m.title}</h2>
+    <div class="mbody">${m.body||''}</div>
+    <div class="opts">${m.options.map((o,i)=>`<button class="opt${o.primary?' primary':''}" data-act="mopt" data-i="${i}"${o.disabled?' disabled':''}><span class="ol">${o.label}</span>${o.sub?`<span class="os">${o.sub}</span>`:''}</button>`).join('')}</div></div>`;
+  const f=el.querySelector('.opt:not([disabled])');if(f)f.focus({preventScroll:true});
+}
+function closeModal(){const el=$('#modal');el.hidden=true;el.innerHTML='';MCB=[];}
+function snap(){return {rep:S.rep,hype:S.hype,funds:S.funds,ov:overall(true).you};}
+function diffChips(a,b){
+  const out=[];const d=(v,lab,f=x=>x.toFixed(0))=>{if(Math.abs(v)>=.5)out.push(`<span class="${v>0?'up':'dn'}">${lab} ${v>0?'+':'−'}${f(Math.abs(v))}</span>`);};
+  d(b.ov-a.ov,'Your vote share',x=>x.toFixed(1)+'%');d(b.funds-a.funds,'Funds',x=>L(x));d(b.rep-a.rep,'Reputation');d(b.hype-a.hype,'Hype');
+  return out.length?`<div class="fx">${out.join('')}</div>`:'';
+}
+function modalPick(i){
+  const fn=MCB[i];if(!fn)return;
+  const before=snap();
+  const out=fn();
+  if(out===KEEP) return;
+  normalize();
+  if(S.screen==='result'){closeModal();render();return;}
+  if(typeof out==='string'){
+    log(out,'good');
+    showModal({kicker:'Day '+S.day,title:'What happened',body:`<p>${out}</p>${diffChips(before,snap())}`,options:[{label:'Continue',primary:true,fn:()=>{}}]});
+  } else closeModal();
+  render();
+}
+
+/* ================= Polling & counting ================= */
+function goPolling(){
+  closeModal();
+  const res={};
+  REGIONS.forEach(r=>{
+    const sc=S.score[r.id];const w={};
+    CANDS.forEach(k=>{
+      const v=Math.max(.5,sc[k]*(1+gauss()*.06));
+      const t=k==='you'?1+S.booth[r.id]*.06+S.hype/400:RIVALS[k].turn;
+      w[k]=(k==='ind'&&S.bribedBhola)?v*.6:v*t;
+    });
+    const tot=CANDS.reduce((a,k)=>a+w[k],0);
+    const turnout=clamp(r.turnout+S.hype/700+rand(-.03,.03)+S.booth[r.id]*.008,.4,.86);
+    const polled=Math.round(r.voters*turnout);const nota=Math.round(polled*rand(.006,.014));
+    const votes={};CANDS.forEach(k=>votes[k]=Math.round((polled-nota)*w[k]/tot));votes.nota=nota;
+    res[r.id]={turnout,polled,votes};
+  });
+  S.result=res;S.screen='poll';S.votedFor=null;render();window.scrollTo({top:0});
+}
+function castVote(k){
+  if(S.votedFor) return;
+  S.votedFor=k;S.result.old.votes[k]+=1;
+  beep(1350,1.1,.05,'sine');
+  render();
+}
+function buildCount(){
+  const W={gaon:[1,8],old:[2,9],mill:[5,12],uni:[7,13],town:[9,15]};const N=15;const keys=[...CANDS,'nota'];
+  const cum=[];for(let i=0;i<=N;i++){cum[i]={};keys.forEach(k=>cum[i][k]=0);}
+  REGIONS.forEach(r=>{const [s,e]=W[r.id];const n=e-s+1;
+    keys.forEach(k=>{const tot=S.result[r.id].votes[k];const w=Array.from({length:n},()=>rand(.65,1.35));const sw=w.reduce((a,b)=>a+b,0);
+      let acc=0;for(let i=1;i<=N;i++){if(i>=s&&i<=e)acc+=tot*w[i-s]/sw;cum[i][k]+=i>=e?tot:Math.round(acc);}});
+  });
+  return {round:0,N,cum,W,prev:null};
+}
+let autoTimer=null;
+function nextRound(){
+  const c=S.count;if(c.round>=c.N){stopAuto();return;}
+  c.prev={...c.cum[c.round]};c.round++;
+  beep(c.round===c.N?660:990,.07,.03);
+  if(c.round>=c.N)stopAuto();
+  render();
+}
+function stopAuto(){if(autoTimer){clearInterval(autoTimer);autoTimer=null;}}
+function toggleAuto(){if(autoTimer){stopAuto();render();return;}autoTimer=setInterval(nextRound,1200);nextRound();}
+function finish(){
+  stopAuto();const c=S.count;c.round=c.N;const t=c.cum[c.N];
+  const order=[...CANDS].sort((a,b)=>t[b]-t[a]);
+  const valid=CANDS.reduce((a,k)=>a+t[k],0);
+  S.final={order,t,valid,margin:t[order[0]]-t[order[1]],share:t.you/valid*100,pos:order.indexOf('you')+1};
+  S.ended=order[0]==='you'?(S.spent>EC_LIMIT?'petition':'win'):'lose';
+  S.screen='result';render();window.scrollTo({top:0});
+}
+
+/* ================= Rendering ================= */
+function barRow(k,v,est){const c=cand(k);
+  return `<div class="bar"><span class="who"><span aria-hidden="true">${c.sym}</span><b>${k==='you'?esc(S.name):c.short}</b></span><span class="track"><i style="width:${clamp(v,0,100).toFixed(1)}%;background:${c.col}"></i></span><span class="pct">${est?'~':''}${v.toFixed(0)}%</span></div>`;}
+function meter(v,max,col){return `<span class="meter"><i style="width:${clamp(v/max*100,0,100)}%;background:${col}"></i></span>`;}
+
+function renderTitle(){
+  const rows=[['pd'],['lkm'],['ind']];
+  return `<section class="title">
+    <div>
+      <p class="eyebrow">General election · 07 Chandanpur constituency</p>
+      <h1 class="big">Fight for <span>the Seat</span></h1>
+      <p class="lede">Fourteen days. 1,72,000 voters. Three rivals who have done this before. Win Chandanpur’s seat in the Lok Sabha.</p>
+      <div class="cta"><button class="btn primary" data-act="tosetup">File your nomination</button></div>
+      <ul class="how">
+        <li><span class="n">01</span><span><b>Spend 3 energy a day</b> on rallies, padyatras, promises and endorsements across five very different areas.</span></li>
+        <li><span class="n">02</span><span><b>Watch your money.</b> Declared spending must stay under the ₹95 lakh Election Commission limit.</span></li>
+        <li><span class="n">03</span><span><b>Handle the news.</b> Scandals, deepfakes, floods, debates and offers you should probably refuse.</span></li>
+        <li><span class="n">04</span><span><b>Polling day,</b> then round-by-round EVM counting. Three EC notices and you are disqualified.</span></li>
+      </ul>
+    </div>
+    <div class="bu" aria-hidden="true">
+      <div class="bu-top"><span>BALLOT UNIT</span><span class="ready">READY</span></div>
+      ${rows.map(([k],i)=>{const c=cand(k);return `<div class="bu-row"><span class="sl">${i+1}</span><span class="nm">${c.name}<small>${c.party}</small></span><span class="sy">${c.sym}</span><span class="lamp"></span><span class="bb"></span></div>`;}).join('')}
+      <div class="bu-row me"><span class="sl">4</span><span class="nm">You<small>Your party</small></span><span class="sy">?</span><span class="lamp on"></span><span class="bb"></span></div>
+      <div class="bu-row"><span class="sl">5</span><span class="nm">NOTA<small>None of the above</small></span><span class="sy">✖</span><span class="lamp"></span><span class="bb"></span></div>
+    </div>
+  </section>
+  <p class="foot">All candidates, parties and places in this game are fictional.</p>`;
+}
+function renderSetup(){
+  const t=(grp,val,cur,b,s,em)=>`<button class="tile" data-act="pick" data-g="${grp}" data-v="${val}" aria-pressed="${cur===val}">${em?`<span class="em">${em}</span>`:''}<b>${b}</b>${s?`<span>${s}</span>`:''}</button>`;
+  return `<section class="setup">
+    <p class="eyebrow">Form 2A · Nomination paper</p>
+    <h2>Who is contesting?</h2>
+    <div class="form">
+      <div class="two">
+        <div class="field"><label for="f-name">Candidate name</label><input id="f-name" maxlength="28" value="${esc(SETUP.name)}" autocomplete="off"></div>
+        <div class="field"><label for="f-party">Party name</label><input id="f-party" maxlength="32" value="${esc(SETUP.party)}" autocomplete="off"></div>
+      </div>
+      <div class="field"><span class="lbl">Election symbol</span><p class="hint">This is what voters look for on the EVM.</p>
+        <div class="tiles sym">${SYMBOLS.map(([e,n])=>t('sym',e,SETUP.sym,n,'',e)).join('')}</div></div>
+      <div class="field"><span class="lbl">Background</span>
+        <div class="tiles">${Object.entries(BGS).map(([k,b])=>t('bg',k,SETUP.bg,b.label,b.sub)).join('')}</div></div>
+      <div class="field"><span class="lbl">Difficulty</span>
+        <div class="tiles">${Object.entries(DIFFS).map(([k,d])=>t('diff',k,SETUP.diff,d.label,d.sub)).join('')}</div></div>
+      <div class="cta"><button class="btn primary" data-act="start">Start the campaign</button><button class="btn" data-act="totitle">Back</button></div>
+    </div>
+  </section>`;
+}
+function mapSVG(){
+  const P={uni:'120,10 250,10 240,90 150,100 110,70',town:'250,10 390,10 390,130 300,140 240,90',
+    old:'150,100 240,90 300,140 270,200 170,195 140,150',mill:'300,140 390,130 390,290 260,290 270,200',
+    gaon:'10,10 120,10 110,70 150,100 140,150 170,195 270,200 260,290 10,290'};
+  const C={uni:[182,48],town:[318,62],old:[215,146],mill:[330,218],gaon:[72,170]};
+  return `<svg viewBox="0 0 400 300" role="img" aria-label="Map of Chandanpur constituency. Select an area to campaign there.">
+    ${REGIONS.map(r=>{const s=shownShares(r.id);const ord=[...CANDS].sort((a,b)=>s[b]-s[a]);const lead=ord[0];const m=s[ord[0]]-s[ord[1]];
+      return `<polygon class="reg${S.selected===r.id?' sel':''}" points="${P[r.id]}" data-act="region" data-r="${r.id}" style="fill:var(--c-${lead});fill-opacity:${(.22+Math.min(m,25)/25*.4).toFixed(2)}"><title>${r.name}: ${cand(lead).short} leads</title></polygon>`;}).join('')}
+    <path d="M392 168 C 350 178, 330 236, 290 250 S 205 262, 150 298" fill="none" stroke="var(--river)" stroke-width="7" stroke-linecap="round" opacity=".8" pointer-events="none"/>
+    <text x="196" y="286" class="maplbl s" style="font-style:italic">Chandan river</text>
+    <path d="M8 118 L 392 96" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="6 4" opacity=".55" pointer-events="none"/>
+    ${REGIONS.map(r=>{const s=shownShares(r.id);const [x,y]=C[r.id];return `<text x="${x}" y="${y}" text-anchor="middle" class="maplbl">${r.name}</text><text x="${x}" y="${y+15}" text-anchor="middle" class="maplbl s">You ${surveyed()?'':'~'}${s.you.toFixed(0)}%</text>`;}).join('')}
+  </svg>`;
+}
+function renderGame(){
+  const r=R(S.selected);const sh=shownShares(r.id);const est=!surveyed();const ov=overall(false);
+  const silence=S.day===S.maxDay;const daysLeft=S.maxDay-S.day;
+  return `<header class="top">
+    <div><h1 class="logo">Fight for the Seat</h1><p class="seat">${esc(S.name)} · ${esc(S.party)} ${S.sym} · 07 Chandanpur</p></div>
+    <div class="status">
+      <div class="stat"><span class="k">Day</span><span class="v">${S.day}<small>/${S.maxDay}</small></span><span class="note">${silence?'Campaign silence':daysLeft===1?'Polling in 2 days':`Polling in ${daysLeft+1} days`}</span></div>
+      <div class="stat"><span class="k">Energy</span><span class="pips" aria-label="${S.ap} of 3 energy">${[0,1,2].map(i=>`<i class="pip${i<S.ap?' full':''}"></i>`).join('')}</span></div>
+      <div class="stat"><span class="k">Funds</span><span class="v">${L(S.funds)}</span><span class="note${S.spent>EC_LIMIT*.85?' warn':''}">Spent ${L(S.spent)} of ${L(EC_LIMIT)}</span></div>
+      <div class="stat"><span class="k">Reputation ${Math.round(S.rep)}</span>${meter(S.rep,100,'var(--good)')}</div>
+      <div class="stat"><span class="k">Hype ${Math.round(S.hype)}</span>${meter(S.hype,60,'var(--marigold)')}</div>
+      <div class="stat"><span class="k">EC notices</span><span class="inkdots" aria-label="${S.strikes} of 3 notices">${[0,1,2].map(i=>`<i class="${i<S.strikes?'on':''}"></i>`).join('')}</span></div>
+      <div class="stat"><span class="k">Sound</span><button class="iconbtn" data-act="mute">${muted?'Off':'On'}</button></div>
+    </div>
+  </header>
+  <main class="grid">
+    <div class="left">
+      <section class="card">
+        <div class="card-h"><h2>Chandanpur constituency</h2><span class="tag${est?'':' ok'}">${est?'Estimates ±6%':'Survey: exact'}</span></div>
+        <div class="mapwrap">${mapSVG()}</div>
+        <div class="legend">${CANDS.map(k=>{const c=cand(k);return `<span><i style="background:${c.col}"></i>${k==='you'?esc(S.name):c.name}</span>`;}).join('')}<span>Shading shows who leads</span></div>
+        <h3>Whole seat, projected</h3>
+        <div class="bars">${CANDS.map(k=>barRow(k,ov[k],est)).join('')}</div>
+      </section>
+    </div>
+    <div class="desk">
+      <section class="card region">
+        <div class="card-h"><div><h2>${r.name}</h2><p class="sub">${r.sub}</p></div><div class="voters"><b>${fmt(r.voters)}</b>voters</div></div>
+        <div class="chips">${Object.entries(r.issues).sort((a,b)=>b[1]-a[1]).map(([k,w])=>`<span class="chip${S.promises.includes(k)?' done':w>=3?' hot':''}">${ISSUES[k].label}${S.promises.includes(k)?' ✓':''}</span>`).join('')}</div>
+        <h3>Vote share here</h3>
+        <div class="bars">${CANDS.map(k=>barRow(k,sh[k],est)).join('')}</div>
+        <div class="meta"><span>Who lives here: ${Object.entries(r.blocs).map(([b,v])=>`<b>${BLOC[b]}</b> ${Math.round(v*100)}%`).join(', ')}</span>
+          <span>Booth teams: <b>${S.booth[r.id]}/3</b></span><span>Your visits: <b>${S.visits[r.id]}</b></span></div>
+      </section>
+      <section class="card">
+        <div class="card-h"><h2>Today’s campaign</h2><span class="tag">${S.ap} energy left</span></div>
+        <div class="regtabs" role="group" aria-label="Choose an area">${REGIONS.map(x=>`<button class="regtab" data-act="region" data-r="${x.id}" aria-pressed="${x.id===S.selected}">${x.name}</button>`).join('')}</div>
+        <div class="acts">${ACTIONS.map(a=>{const why=blocked(a);
+          return `<button class="act${a.shady?' shady':''}" data-act="do" data-id="${a.id}"${why?' disabled':''}>
+            <span class="an"><span>${a.name}</span></span><span class="ad">${a.desc}</span>
+            <span class="ac"><span class="e">${'●'.repeat(a.ap)} ${a.ap} energy</span><span>${a.cost?L(a.cost):'Free'}</span>${a.region?`<span>in ${r.name}</span>`:''}</span>
+            ${why?`<span class="why">${why}</span>`:''}</button>`;}).join('')}</div>
+        <button class="endday" data-act="endday">${silence?'Go to polling day →':`End day ${S.day} →`}</button>
+      </section>
+    </div>
+    <section class="card news">
+      <div class="masthead"><h2>Chandanpur Times</h2><span>Election special · Day ${S.day}</span></div>
+      <ul class="log">${S.log.map(l=>`<li class="${l.tone}"><span class="d">Day ${l.day}</span><span class="t">${l.text}</span></li>`).join('')}</ul>
+    </section>
+  </main>`;
+}
+function renderPoll(){
+  const keys=['pd','lkm','ind','you','nota'];
+  const totalPolled=REGIONS.reduce((a,r)=>a+S.result[r.id].polled,0);const tv=REGIONS.reduce((a,r)=>a+r.voters,0);
+  const v=S.votedFor;
+  return `<section class="stage">
+    <div class="copy">
+      <p class="eyebrow">Polling day · 7 AM to 6 PM</p>
+      <h2>Your turn to vote</h2>
+      ${!v?`<p>Queues have formed outside every booth in Chandanpur. Your finger has been inked. Press the blue button next to your choice.</p>`
+        :`<p>Beep. Your vote is recorded. ${v==='you'?'You voted for yourself, as one does.':v==='nota'?'You pressed NOTA on your own ballot. Bold.':`You voted for ${cand(v).name}. Your campaign team is speechless.`}</p>
+          <div class="turnout"><p><b>Polls have closed.</b> Turnout across the seat: <span class="num">${(totalPolled/tv*100).toFixed(1)}%</span> (${fmt(totalPolled)} of ${fmt(tv)} voters).</p>
+          <div class="bars">${REGIONS.map(r=>`<div class="bar"><span class="who"><b>${r.name}</b></span><span class="track"><i style="width:${(S.result[r.id].turnout*100).toFixed(0)}%;background:var(--accent)"></i></span><span class="pct">${(S.result[r.id].turnout*100).toFixed(0)}%</span></div>`).join('')}</div></div>
+          <div class="cta"><button class="btn primary" data-act="tocount">Go to the counting centre</button></div>`}
+    </div>
+    <div>
+      <div class="bu">
+        <div class="bu-top"><span>BALLOT UNIT · 07 CHANDANPUR</span><span class="ready">${v?'BUSY':'READY'}</span></div>
+        ${keys.map((k,i)=>{const c=cand(k);return `<div class="bu-row${k==='you'?' me':''}"><span class="sl">${i+1}</span><span class="nm">${k==='you'?esc(S.name):c.name}<small>${k==='you'?esc(S.party):c.party}</small></span><span class="sy">${c.sym}</span><span class="lamp${v===k?' on':''}"></span><button class="bb" data-act="vote" data-k="${k}" aria-label="Vote for ${k==='you'?esc(S.name):c.name}"${v?' disabled':''}></button></div>`;}).join('')}
+      </div>
+      <div class="vvpat" aria-live="polite">${v?`<div class="slip">VVPAT · ${(v==='you'?esc(S.name):cand(v).name).toUpperCase()} · ${cand(v).sym}</div><span class="muted">The paper slip shows for 7 seconds, then drops into the sealed box.</span>`:'<span class="muted">The VVPAT window will show a paper slip of your vote.</span>'}</div>
+    </div>
+  </section>`;
+}
+function renderCount(){
+  const c=S.count;const cur=c.cum[c.round];const keys=[...CANDS];
+  const order=[...keys].sort((a,b)=>cur[b]-cur[a]);const maxv=Math.max(1,...keys.map(k=>cur[k]));
+  const active=REGIONS.filter(r=>c.round>=c.W[r.id][0]&&c.round<=c.W[r.id][1]);
+  const done=REGIONS.filter(r=>c.round>c.W[r.id][1]);
+  return `<section class="cnt">
+    <div class="cnt-head">
+      <div><p class="eyebrow">Counting centre · Government Inter College</p><h2>Counting day</h2></div>
+      <div class="round">Round <b>${c.round}</b> of ${c.N}</div>
+    </div>
+    <div class="where">${c.round===0?'Strong rooms are being opened in front of the candidates’ agents.':`Counting EVMs from: ${active.map(r=>`<span class="chip hot">${r.name}</span>`).join('')||'none'}${done.length?` · Done: ${done.map(r=>`<span class="chip">${r.name}</span>`).join('')}`:''}`}</div>
+    <div class="tally">${order.map((k,i)=>{const cc=cand(k);const lead=i===0&&c.round>0;const gap=lead?cur[k]-cur[order[1]]:cur[order[0]]-cur[k];
+      return `<div class="trow${k==='you'?' you':''}"><span class="sy" aria-hidden="true">${cc.sym}</span>
+        <span class="nm"><b>${k==='you'?esc(S.name):cc.name}</b><span>${k==='you'?esc(S.party):cc.party}</span></span>
+        <span class="vt" data-from="${c.prev?c.prev[k]:0}" data-to="${cur[k]}">${fmt(cur[k])}</span>
+        <span class="st ${lead?'lead':'trail'}">${c.round===0?'Awaiting':lead?`Leading by ${fmt(gap)}`:`Trailing by ${fmt(gap)}`}</span>
+        <span class="bar2"><i style="width:${(cur[k]/maxv*100).toFixed(1)}%;background:${cc.col}"></i></span></div>`;}).join('')}</div>
+    <p class="where">NOTA so far: <span class="num">${fmt(cur.nota)}</span></p>
+    <div class="ctrl">
+      ${c.round<c.N?`<button class="btn primary" data-act="next">Count next round</button><button class="btn" data-act="auto">${autoTimer?'Pause':'Auto-count'}</button><button class="btn" data-act="finish">Skip to result</button>`
+        :`<button class="btn primary" data-act="finish">Declare the result</button>`}
+    </div>
+  </section>`;
+}
+function renderResult(){
+  const again=`<div class="cta"><button class="btn primary" data-act="again">Contest again</button><button class="btn" data-act="tosetup">New candidate</button></div>`;
+  if(S.ended==='dq'){
+    return `<section class="res"><div class="front"><div class="paper"><span>Chandanpur Times · Special edition</span><span>Day ${S.day}</span></div>
+      <h2 class="head">EC disqualifies ${esc(S.name)}</h2>
+      <p class="deck">After three notices under the Model Code of Conduct, the Election Commission has barred the ${esc(S.party)} candidate from the Chandanpur race. Gajendra Prakash is expected to coast to a fourth term.</p></div>
+      <div><span class="stamp">Nomination cancelled</span></div>
+      <p>Cash, muscle and inflammatory speeches all win votes, until they do not. Try a cleaner campaign next time.</p>${again}</section>`;
+  }
+  const F=S.final;const t=F.t;const w=F.order[0];const wc=cand(w);
+  let head,deck;
+  if(S.ended==='win'){head=`${esc(S.name)} wins Chandanpur`;deck=`The ${esc(S.party)} candidate beats ${cand(F.order[1]).name} by ${fmt(F.margin)} votes${F.margin<2000?' after a nail-biting count':''}. ${S.strikes?'The EC notices will follow you to Delhi.':'A clean campaign, and a seat in the Lok Sabha.'}`;}
+  else if(S.ended==='petition'){head=`${esc(S.name)} wins, then loses in court`;deck=`You won by ${fmt(F.margin)} votes, but declared spending of ${L(S.spent)} crossed the ${L(EC_LIMIT)} limit. On an election petition, the High Court sets your election aside.`;}
+  else {head=`${wc.name} wins Chandanpur`;deck=`${wc.party} takes the seat by ${fmt(F.margin)} votes. ${esc(S.name)} finishes ${ordinal(F.pos)} with ${F.share.toFixed(1)}% of the vote.${F.pos===2&&F.margin<3000?' So close.':''}`;}
+  const forfeit=F.share<100/6;
+  return `<section class="res">
+    <div class="front"><div class="paper"><span>Chandanpur Times · Counting day special</span><span>07 Chandanpur · Lok Sabha</span></div>
+      <h2 class="head">${head}</h2><p class="deck">${deck}</p>
+      ${S.votedFor&&S.votedFor!=='you'?`<p class="muted">Unconfirmed reports say the candidate did not vote for themself.</p>`:''}</div>
+    <div class="rgrid">
+      <div class="card">
+        <div class="card-h"><h2>Final tally</h2><span class="tag">${fmt(F.valid+t.nota)} votes polled</span></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Candidate</th><th>Votes</th><th>Share</th></tr></thead><tbody>
+          ${F.order.map(k=>{const c=cand(k);return `<tr><td>${c.sym} <span class="${k===w?'win':''}">${k==='you'?esc(S.name):c.name}</span></td><td class="num">${fmt(t[k])}</td><td class="num">${(t[k]/F.valid*100).toFixed(1)}%</td></tr>`;}).join('')}
+          <tr><td>✖ NOTA</td><td class="num">${fmt(t.nota)}</td><td class="num">—</td></tr></tbody></table></div>
+        <h3>Area by area</h3>
+        <div class="tbl-wrap"><table><thead><tr><th>Area</th><th>Turnout</th><th>Your votes</th><th>Won by</th></tr></thead><tbody>
+          ${REGIONS.map(r=>{const v=S.result[r.id].votes;const top=[...CANDS].sort((a,b)=>v[b]-v[a])[0];return `<tr><td>${r.name}</td><td class="num">${(S.result[r.id].turnout*100).toFixed(0)}%</td><td class="num">${fmt(v.you)}</td><td>${top==='you'?'<span class="win">You</span>':cand(top).short}</td></tr>`;}).join('')}
+        </tbody></table></div>
+      </div>
+      <div style="display:grid;gap:18px">
+        ${S.ended==='win'?`<div class="cert"><p class="f">FORM 22 · CERTIFICATE OF ELECTION</p><h3>Chandanpur Parliamentary Constituency</h3>
+          <p>I, the Returning Officer, certify that <b>${esc(S.name)}</b> of the <b>${esc(S.party)}</b> has been duly elected to fill the seat in the House of the People from 07 Chandanpur.</p></div>`
+          :forfeit?`<div class="card"><span class="stamp">Security deposit forfeited</span><p style="margin-top:12px">Candidates who win less than one-sixth of the valid votes lose their ₹25,000 deposit. You won ${F.share.toFixed(1)}%.</p></div>`
+          :S.ended==='petition'?`<div class="card"><span class="stamp">Election set aside</span><p style="margin-top:12px">Keep declared spending under ${L(EC_LIMIT)} next time.</p></div>`:''}
+        <div class="card"><h2 style="font-size:19px;margin-bottom:12px">Your campaign</h2>
+          <div class="statlist">
+            <div><b>${L(S.spent)}</b><span>declared spending of ${L(EC_LIMIT)}</span></div>
+            <div><b>${S.stats.rally}</b><span>rallies</span></div>
+            <div><b>${S.stats.padyatra}</b><span>padyatras</span></div>
+            <div><b>${S.promises.length}</b><span>promises made</span></div>
+            <div><b>${S.endorse.length}</b><span>endorsements</span></div>
+            <div><b>${S.strikes}</b><span>EC notices</span></div>
+            <div><b>${Math.round(S.rep)}</b><span>final reputation</span></div>
+            <div><b>${DIFFS[S.diff].label}</b><span>difficulty</span></div>
+          </div></div>
+      </div>
+    </div>
+    ${again}
+  </section>`;
+}
+function render(){
+  const app=$('#app');
+  app.innerHTML=S.screen==='title'?renderTitle():S.screen==='setup'?renderSetup():S.screen==='game'?renderGame():S.screen==='poll'?renderPoll():S.screen==='count'?renderCount():renderResult();
+  if(S.screen==='count') tweenNums();
+}
+function tweenNums(){
+  const els=[...document.querySelectorAll('.vt[data-to]')];
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const t0=performance.now();
+  const step=now=>{const p=Math.min(1,(now-t0)/700);const e=1-Math.pow(1-p,3);
+    els.forEach(el=>{const a=+el.dataset.from,b=+el.dataset.to;el.textContent=fmt(a+(b-a)*e);});
+    if(p<1)requestAnimationFrame(step);};
+  requestAnimationFrame(step);
+}
+
+/* ================= Input ================= */
+function readSetup(){const n=$('#f-name'),p=$('#f-party');if(n)SETUP.name=n.value.trim()||'Ravi Kumar';if(p)SETUP.party=p.value.trim()||'Jan Awaaz Party';}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b||b.disabled)return;
+  const act=b.dataset.act;
+  switch(act){
+    case 'tosetup':S={screen:'setup'};render();window.scrollTo({top:0});break;
+    case 'totitle':readSetup();S={screen:'title'};render();break;
+    case 'pick':readSetup();SETUP[b.dataset.g]=b.dataset.v;render();break;
+    case 'start':readSetup();newGame(SETUP);render();window.scrollTo({top:0});
+      showModal({kicker:'Day 1 · Nomination accepted',title:`Welcome to Chandanpur, ${esc(S.name)}`,
+        body:`<p>Sitting MP <b>Gajendra Prakash</b> (Pragati Dal) is chasing a fourth term. <b>Adv. Sunita Rao</b> (Lok Kalyan Morcha) owns the campuses and the township. <b>Bhola Pehelwan</b> rules Mill Colony and the old city.</p><p>You start with about 9% of the vote. Pick an area on the map, spend your 3 energy each day, and end the day. Polling is after day 14.</p><p class="muted">The map shows estimates that can be off by 6 points. Commission a survey when you need exact numbers.</p>`,
+        options:[{label:'Hit the streets',primary:true,fn:()=>{}}]});break;
+    case 'region':S.selected=b.dataset.r;render();break;
+    case 'do':doAct(b.dataset.id);break;
+    case 'endday':endDay();break;
+    case 'mopt':modalPick(+b.dataset.i);break;
+    case 'mute':muted=!muted;render();break;
+    case 'vote':castVote(b.dataset.k);break;
+    case 'tocount':S.count=buildCount();S.screen='count';render();window.scrollTo({top:0});break;
+    case 'next':stopAuto();nextRound();break;
+    case 'auto':toggleAuto();break;
+    case 'finish':finish();break;
+    case 'again':{const o={name:S.name,party:S.party,sym:S.sym,bg:S.bg,diff:S.diff};closeModal();newGame(o);render();window.scrollTo({top:0});break;}
+  }
+});
+
+/* ================= Boot ================= */
+try{window.claude?.hot?.snapshot?.(()=>({S,SETUP}));}catch(e){}
+function boot(d){
+  if(d&&d.S&&d.S.screen){S=d.S;if(d.SETUP)SETUP=d.SETUP;}
+  render();
+}
+window.claude?.hot?.ready?window.claude.hot.ready(boot):boot(window.claude?.hot?.data??{});
+</script>
